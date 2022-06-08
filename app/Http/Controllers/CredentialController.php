@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Credential;
+use App\Models\Remote;
 use Illuminate\Http\Request;
 
 class CredentialController extends Controller
@@ -28,13 +29,31 @@ class CredentialController extends Controller
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
-        $request->validate([
+        $validationRules = [
             'name' => ['required', 'string', 'max:127', 'min:1'],
             'login' => ['required', 'string', 'max:127', 'min:1'],
             'password' => ['required', 'string', 'max:127', 'min:1']
-        ]);
+        ];
 
-        Credential::create($request->all());
+        if ($request->has('remote')) {
+            $validationRules = array_merge($validationRules, [
+                'host' => ['string', 'max:255'],
+                'port' => ['numeric'],
+                'protocol' => ['string', 'max:63']
+            ]);
+        }
+
+        $request->validate($validationRules);
+
+        $credential = Credential::create($request->all());
+
+        if ($request->has('remote')) {
+            $remote = $credential->remote()->create([
+                'host' => $request->input('host'),
+                'port' => $request->input('port'),
+                'protocol' => $request->input('protocol')
+            ]);
+        }
 
         return redirect()->route('credentials.index');
     }
@@ -64,6 +83,9 @@ class CredentialController extends Controller
 
     public function destroy(Credential $credential): \Illuminate\Http\RedirectResponse
     {
+        if ($credential->remote) {
+            $credential->remote->delete();
+        }
         $credential->delete();
         
         return redirect()->route('credentials.index');
