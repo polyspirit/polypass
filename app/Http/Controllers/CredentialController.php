@@ -70,13 +70,32 @@ class CredentialController extends Controller
 
     public function update(Request $request, Credential $credential): \Illuminate\Http\RedirectResponse
     {
-        $request->validate([
+        $validationRules = [
             'name' => ['string', 'max:127', 'min:1'],
             'login' => ['string', 'max:127', 'min:1'],
             'password' => ['string', 'max:127', 'min:1']
-        ]);
+        ];
+
+        if ($request->has('remote')) {
+            $validationRules = array_merge($validationRules, [
+                'host' => ['string', 'max:255'],
+                'port' => ['numeric'],
+                'protocol' => ['string', 'max:63']
+            ]);
+        }
+
+        $request->validate($validationRules);
 
         $credential->update($request->all());
+
+        if ($request->has('remote')) {
+            $remote = Remote::find($credential->remote->id);
+            $remote->update([
+                'host' => $request->input('host'),
+                'port' => $request->input('port'),
+                'protocol' => $request->input('protocol')
+            ]);
+        }
 
         return redirect()->route('credentials.edit', ['credential' => $credential])->with('status', __('credentials.message-updated'));
     }
@@ -87,7 +106,7 @@ class CredentialController extends Controller
             $credential->remote->delete();
         }
         $credential->delete();
-        
+
         return redirect()->route('credentials.index');
     }
 }
