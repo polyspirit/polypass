@@ -11,6 +11,7 @@
     <title>{{ config('app.name', 'Polypass') }}</title>
 
     <!-- Scripts -->
+    <script src="https://kit.fontawesome.com/4212cb2b11.js" crossorigin="anonymous"></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->

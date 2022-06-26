@@ -10271,3 +10271,27 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper > .form-control {
+  padding-right: 1.8rem;
+}
+
+.password-wrapper > .password-eye {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 50%;
+  right: 2%;
+  margin-top: -0.7rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  cursor: pointer;
+}
+
+.password-wrapper > .password-eye > .fa-regular {
+  font-size: 1rem;
+}
