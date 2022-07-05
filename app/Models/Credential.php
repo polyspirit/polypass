@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Group;
 use App\Models\Remote;
 
 class Credential extends Model
@@ -12,6 +13,11 @@ class Credential extends Model
 
 
     // RELATIONS
+
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
+    }
 
     public function remote()
     {

@@ -5,6 +5,9 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+use Illuminate\Support\Facades\Artisan;
+use App\Models\Group;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -14,11 +17,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        Artisan::call('roles:make');
+        Artisan::call('user:create admin zverskiy@yandex.ru qwe123 superadmin');
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $group = new Group;
+        $group->name = 'root';
+        $group->save();
     }
 }
