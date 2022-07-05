@@ -4,5 +4,7 @@ return [
     'users' => 'Пользователи',
     'user' => 'Пользователь',
     'credentials' => 'Доступы',
-    'credential' => 'Доступ'
+    'credential' => 'Доступ',
+    'groups' => 'Группы',
+    'group' => 'Группа'
 ];

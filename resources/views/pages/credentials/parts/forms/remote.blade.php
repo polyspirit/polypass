@@ -6,7 +6,15 @@
 
     <div class="container-fluid g-0">
         <div class="row mb-3">
-            <div class="col">
+            <div class="col-6">
+                @include('parts.fields.select', [
+                    'name' => 'group_id',
+                    'title' => __('credentials.group'),
+                    'options' => $groups,
+                    'value' => (isset($credential) && ($credential->group->name !== 'root')) ? $credential->group->id : '',
+                ])
+            </div>
+            <div class="col-6">
                 @include('parts.fields.text', [
                     'name' => 'name',
                     'title' => __('credentials.name'),

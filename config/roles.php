@@ -7,12 +7,16 @@ return [
             'users-register',
             'users-modify-any',
             'users-change-roles-any',
+            'groups-create',
+            'groups-modify-any',
             'credentials-create',
-            'credentials-modify-any',
+            'credentials-modify-any'
         ],
         'user' => [
+            'groups-create',
+            'groups-modify',
             'credentials-create',
-            'credentials-modify',
+            'credentials-modify'
         ]
     ]
 

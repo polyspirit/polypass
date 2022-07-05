@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Group;
 use App\Models\Credential;
 use App\Models\Remote;
 use Illuminate\Http\Request;
@@ -19,17 +20,30 @@ class CredentialController extends Controller
     // API
     public function index(): \Illuminate\Contracts\View\View
     {
-        return view('pages.credentials.list', ['credentials' => Credential::all(), 'title' => __('credentials.list')]);
+        $groupRoot = Group::where('name', 'root')->first();
+        $credentials = Credential::where(['group_id' => $groupRoot->id])->get();
+        return view(
+            'pages.credentials.list', 
+            [
+                'groups' => Group::where('name', '!=' , 'root')->get(),
+                'credentials' => $credentials,
+                'title' => __('credentials.list')
+            ]
+        );
     }
 
     public function create(): \Illuminate\Contracts\View\View
     {
-        return view('pages.credentials.create', ['title' => __('credentials.create')]);
+        return view(
+            'pages.credentials.create', 
+            ['groups' => $this->getGroupsOptions(), 'title' => __('credentials.create')]
+        );
     }
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validationRules = [
+            'group_id' => ['integer'],
             'name' => ['required', 'string', 'max:127', 'min:1'],
             'login' => ['required', 'string', 'max:127', 'min:1'],
             'password' => ['required', 'string', 'max:127', 'min:1']
@@ -45,10 +59,15 @@ class CredentialController extends Controller
 
         $request->validate($validationRules);
 
+        if (!$request->has('group_id')) {
+            $groupRoot = Group::where('name', 'root')->first();
+            $request->merge(['group_id' => $groupRoot->id]);
+        }
+
         $credential = Credential::create($request->all());
 
         if ($request->has('remote')) {
-            $remote = $credential->remote()->create([
+            $credential->remote()->create([
                 'host' => $request->input('host'),
                 'port' => $request->input('port'),
                 'protocol' => $request->input('protocol')
@@ -65,7 +84,14 @@ class CredentialController extends Controller
 
     public function edit(Credential $credential): \Illuminate\Contracts\View\View
     {
-        return view('pages.credentials.edit', ['credential' => $credential, 'title' => __('credentials.edit')]);
+        return view(
+            'pages.credentials.edit', 
+            [
+                'groups' => $this->getGroupsOptions(),
+                'credential' => $credential,
+                'title' => __('credentials.edit')
+            ]
+        );
     }
 
     public function update(Request $request, Credential $credential): \Illuminate\Http\RedirectResponse
@@ -108,5 +134,18 @@ class CredentialController extends Controller
         $credential->delete();
 
         return redirect()->route('credentials.index');
+    }
+
+
+    // OTHER
+
+    private function getGroupsOptions(): array
+    {
+        $groupsOptions = [];
+        foreach (Group::all() as $group) {
+            $groupsOptions[$group->id] = $group->name;
+        }
+
+        return $groupsOptions;
     }
 }

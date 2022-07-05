@@ -5,6 +5,14 @@
     @endif
 
     <div class="mb-3">
+        @include('parts.fields.select', [
+            'name' => 'group_id',
+            'title' => __('credentials.group'),
+            'options' => $groups,
+            'value' => (isset($credential) && ($credential->group->name !== 'root')) ? $credential->group->id : '',
+        ])
+    </div>
+    <div class="mb-3">
         @include('parts.fields.text', [
             'name' => 'name',
             'title' => __('credentials.name'),

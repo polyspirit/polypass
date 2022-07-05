@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'group' => 'Группа',
     'name' => 'Имя',
     'login' => 'Логин',
     'password' => 'Пароль',

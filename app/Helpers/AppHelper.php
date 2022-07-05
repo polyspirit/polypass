@@ -30,3 +30,18 @@ if (!function_exists('getUnderscoreClassName')) {
         return camelCaseToUnderscore($classNameParts[count($classNameParts) - 1]);
     }
 }
+
+if (!function_exists('isAssociative')) {
+    function isAssociative(array $inptArr)
+    {
+        if ([] === $inptArr) {
+            return true;
+        }
+
+        if (array_keys($inptArr) !== range(0, count($inptArr) - 1)) {
+            return true;
+        }
+
+        return false;
+    }
+}
