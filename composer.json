@@ -1,8 +1,11 @@
 {
-    "name": "laravel/laravel",
+    "name": "polyspirit/polypass",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "description": "Credentials keeper.",
+    "keywords": ["credentials", "passwords", "keeper"],
+    "version": "0.1.0-a1",
+    "homepage": "https://github.com/polyspirit/polypass",
+    "readme": "https://github.com/polyspirit/polypass/blob/main/README.md",
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
