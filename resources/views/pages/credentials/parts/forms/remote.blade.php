@@ -60,7 +60,7 @@
             </div>
             <div class="col">
                 @include('parts.fields.password', [
-                    'title' => __('signin.Password'),
+                    'title' => __('credentials.password'),
                     'value' => isset($credential) ? $credential->password : '',
                 ])
             </div>

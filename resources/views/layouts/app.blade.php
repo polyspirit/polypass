@@ -59,7 +59,7 @@
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    {{ __('signin.Logout') }}
+                                    {{ __('signin.logout') }}
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -90,7 +90,7 @@
                                     @if (isset($title))
                                     {{ $title }}
                                     @else
-                                    Dashboard
+                                    {{ __('global.dashboard') }}
                                     @endif
                                 </h1>
                             </div>

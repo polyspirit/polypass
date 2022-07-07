@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'dashboard' => 'Dashboard',
     'submit' => 'Submit',
     'edit' => 'Edit',
     'update' => 'Update',

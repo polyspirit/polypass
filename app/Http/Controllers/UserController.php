@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -34,12 +35,31 @@ class UserController extends Controller
 
     public function update(Request $request, User $user): \Illuminate\Http\RedirectResponse
     {
-        $request->validate([
+        $exceptFields = ['role'];
+
+        $rules = [
             'name' => ['string', 'max:255', 'min:2'],
-            'email' => ['string', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['string', 'min:8'],
             'role' => ['string']
-        ]);
+        ];
+
+        if ($request->has('email') && ($request->input('email') != $user->email)) {
+            $rules['email'] = ['string', 'email', 'max:255', 'unique:users,email'];
+        }
+
+        if ($request->has('password') && !empty($request->input('password'))) {
+            $rules['password'] = ['required', 'string', 'min:6', 'confirmed'];
+        } else {
+            $exceptFields[] = 'password';
+            $exceptFields[] = 'password_confirmation';
+        }
+
+        $request->validate($rules);
+
+        if (isset($rules['password'])) {
+            $request->merge(['password' => Hash::make($request->input('password'))]);
+
+            $exceptFields[] = 'password_confirmation';
+        }
 
         $redirectRoute = redirect()->route('users.edit', ['user' => $user]);
 
@@ -50,7 +70,7 @@ class UserController extends Controller
             return $redirectRoute->withErrors(['role' => 'You can not change role of this user']);
         }
 
-        $user->update($request->except(['role']));
+        $user->update($request->except($exceptFields));
 
         return $redirectRoute->with('status', 'User was successfully updated.');
     }

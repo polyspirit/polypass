@@ -8,29 +8,34 @@
     @method('PATCH')
 
     <div class="mb-3">
-        <label for="user-name" class="form-label">{{ __('users.name') }}</label>
-        <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="user-name" value="{{ $user->name }}" aria-describedby="nameHelp">
-        @error('name')
-        <div id="nameHelp" class="form-text alert alert-danger">{{ $message }}</div>
-        @enderror
+        @include('parts.fields.text', [
+            'name' => 'name',
+            'title' => __('users.name'),
+            'value' => $user->name,
+        ])
     </div>
     <div class="mb-3">
-        <label for="user-email" class="form-label">{{ __('users.email') }}</label>
-        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="user-email" value="{{ $user->email }}" aria-describedby="emailHelp">
-        @error('email')
-        <div id="emailHelp" class="form-text alert alert-danger">{{ $message }}</div>
-        @enderror
+        @include('parts.fields.text', [
+            'name' => 'email',
+            'type' => 'email',
+            'title' => __('users.email'),
+            'value' => $user->email,
+        ])
     </div>
     <div class="mb-3">
-        <label for="user-password" class="form-label">{{ __('credentials.password') }}</label>
-        <input type="password" class="form-control @error('password') is-invalid @enderror" id="user-password" aria-describedby="passwordHelp">
-        @error('password')
-        <div id="passwordHelp" class="form-text alert alert-danger">{{ $message }}</div>
-        @enderror
+        @include('parts.fields.password', [
+            'title' => __('signin.new_password')
+        ])
+    </div>
+    <div class="mb-3">
+        @include('parts.fields.password', [
+            'name' => 'password_confirmation',
+            'title' => __('signin.confirm_password')
+        ])
     </div>
     @can('users-change-roles-any')
     <div class="mb-3">
-        <label for="user-role" class="form-label">Status</label>
+        <label for="user-role" class="form-label">{{ __('users.role') }}</label>
         <select id="user-role" class="form-select @error('role') is-invalid @enderror" name="role" aria-describedby="roleHelp">
             @foreach (config('roles.roles') as $role => $permissions)
             <option value="{{ $role }}" @selected($user->hasRole($role))>

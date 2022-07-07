@@ -31,7 +31,7 @@
     </div>
     <div class="mb-3">
         @include('parts.fields.password', [
-            'title' => __('signin.Password'),
+            'title' => __('credentials.password'),
             'value' => isset($credential) ? $credential->password : '',
         ])
     </div>
