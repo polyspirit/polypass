@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         Artisan::call('roles:make');
-        Artisan::call('user:create admin zverskiy@yandex.ru qwe123 superadmin');
+        Artisan::call('user:create admin admin@example.com qwe123 superadmin');
 
         $group = new Group;
         $group->name = 'root';

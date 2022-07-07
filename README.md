@@ -12,16 +12,17 @@ The project is still in development.
 cd /path_to_project_root_folder
 git clone https://github.com/polyspirit/polypass.git .
 ```
-2. Copy **.env.example**, rename it to **.env** and modify as you need.
-3. Make alias for sail:
+2. Do `composer install`.
+3. Copy **.env.example**, rename it to **.env** and modify as you need.
+4. Make alias for sail:
 ```bash
 alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
 ```
-4. Up docker containers
+5. Up docker containers
 ```bash
 sail up -d
 ```
-5. Do migrations:
+6. Do migrations:
 ```bash
 sail artisan migrate --seed
 ```
@@ -31,5 +32,5 @@ Seeder will create all roles, root group and superadmin user with:
 
 You can change it later.
 
-6. Go to your APP_URL (defined in .env file).
-7. Use as you want!
+7. Go to your APP_URL (defined in .env file).
+8. Use as you want!
