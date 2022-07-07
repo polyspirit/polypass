@@ -1,15 +1,12 @@
 <?php
 
 return [
-    'Email Address' => 'Email address',
-    'Password' => 'Password',
-    'Login' => 'Login',
-    'Remember Me' => 'Remember me',
-    'Forgot Your Password?' => 'Forgot your password?',
-    'Confirm Password' => 'Confirm password',
-    'Name' => 'Name',
-    'Register' => 'Register',
-    'Sign In' => 'Sign in',
-    'Sign Up' => 'Sign up',
-    'Logout' => 'Logout',
+    'remember_me' => 'Remember me',
+    'forgot_password' => 'Forgot your password?',
+    'confirm_password' => 'Confirm password',
+    'login' => 'Login',
+    'register' => 'Register',
+    'sign_in' => 'Sign in',
+    'sign_up' => 'Sign up',
+    'logout' => 'Logout',
 ];

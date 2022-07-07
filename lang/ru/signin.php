@@ -1,15 +1,12 @@
 <?php
 
 return [
-    'Email Address' => 'Email адрес',
-    'Password' => 'Пароль',
-    'Login' => 'Логин',
-    'Remember Me' => 'Запомнить меня',
-    'Forgot Your Password?' => 'Забыли пароль?',
-    'Confirm Password' => 'Подтвердить пароль',
-    'Name' => 'Имя',
-    'Register' => 'Регистрация',
-    'Sign In' => 'Войти',
-    'Sign Up' => 'Создать',
-    'Logout' => 'Выйти',
+    'remember_me' => 'Запомнить меня',
+    'forgot_password' => 'Забыли пароль?',
+    'confirm_password' => 'Подтвердить пароль',
+    'login' => 'Войти',
+    'register' => 'Регистрация',
+    'sign_in' => 'Войти',
+    'sign_up' => 'Создать',
+    'logout' => 'Выйти',
 ];

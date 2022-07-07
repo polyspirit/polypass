@@ -8,21 +8,21 @@
     @method('PATCH')
 
     <div class="mb-3">
-        <label for="user-name" class="form-label">Name</label>
+        <label for="user-name" class="form-label">{{ __('users.name') }}</label>
         <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" id="user-name" value="{{ $user->name }}" aria-describedby="nameHelp">
         @error('name')
         <div id="nameHelp" class="form-text alert alert-danger">{{ $message }}</div>
         @enderror
     </div>
     <div class="mb-3">
-        <label for="user-email" class="form-label">Email address</label>
+        <label for="user-email" class="form-label">{{ __('users.email') }}</label>
         <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="user-email" value="{{ $user->email }}" aria-describedby="emailHelp">
         @error('email')
         <div id="emailHelp" class="form-text alert alert-danger">{{ $message }}</div>
         @enderror
     </div>
     <div class="mb-3">
-        <label for="user-password" class="form-label">Password</label>
+        <label for="user-password" class="form-label">{{ __('credentials.password') }}</label>
         <input type="password" class="form-control @error('password') is-invalid @enderror" id="user-password" aria-describedby="passwordHelp">
         @error('password')
         <div id="passwordHelp" class="form-text alert alert-danger">{{ $message }}</div>
@@ -45,7 +45,7 @@
     @endcan
     
     @can('update', $user)
-    <button type="submit" class="btn btn-primary">Update</button>
+    <button type="submit" class="btn btn-primary">{{ __('global.update') }}</button>
     @endcan
 </form>
 @else
@@ -57,7 +57,7 @@
     @csrf
     @method('DELETE')
 
-    <button type="submit" class="btn btn-danger">Delete</button>
+    <button type="submit" class="btn btn-danger">{{ __('global.delete') }}</button>
 </form>
 @endcan
 

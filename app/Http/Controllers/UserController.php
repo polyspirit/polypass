@@ -19,17 +19,17 @@ class UserController extends Controller
 
     public function index(): \Illuminate\Contracts\View\View
     {
-        return view('pages.users.list', ['users' => User::all(), 'title' => 'Users List']);
+        return view('pages.users.list', ['users' => User::all(), 'title' => __('entities.users')]);
     }
 
     public function show(User $user): \Illuminate\Contracts\View\View
     {
-        return view('pages.users.profile', ['user' => $user, 'title' => 'User Profile']);
+        return view('pages.users.profile', ['user' => $user, 'title' => __('users.profile')]);
     }
 
     public function edit(User $user): \Illuminate\Contracts\View\View
     {
-        return view('pages.users.edit', ['user' => $user, 'title' => 'User Edit']);
+        return view('pages.users.edit', ['user' => $user, 'title' => __('users.edit')]);
     }
 
     public function update(Request $request, User $user): \Illuminate\Http\RedirectResponse
