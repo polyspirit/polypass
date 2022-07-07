@@ -32,11 +32,15 @@ class CredentialController extends Controller
         );
     }
 
-    public function create(): \Illuminate\Contracts\View\View
+    public function create(Request $request): \Illuminate\Contracts\View\View
     {
         return view(
             'pages.credentials.create', 
-            ['groups' => $this->getGroupsOptions(), 'title' => __('credentials.create')]
+            [
+                'groups' => $this->getGroupsOptions(),
+                'group_id' => $request->input('group_id'),
+                'title' => __('credentials.create')
+            ]
         );
     }
 
@@ -97,6 +101,7 @@ class CredentialController extends Controller
     public function update(Request $request, Credential $credential): \Illuminate\Http\RedirectResponse
     {
         $validationRules = [
+            'group_id' => ['integer'],
             'name' => ['string', 'max:127', 'min:1'],
             'login' => ['string', 'max:127', 'min:1'],
             'password' => ['string', 'max:127', 'min:1']
@@ -123,7 +128,10 @@ class CredentialController extends Controller
             ]);
         }
 
-        return redirect()->route('credentials.edit', ['credential' => $credential])->with('status', __('credentials.message-updated'));
+        return redirect()->route(
+            'credentials.edit', 
+            ['credential' => $credential]
+        )->with('status', __('credentials.message-updated'));
     }
 
     public function destroy(Credential $credential): \Illuminate\Http\RedirectResponse

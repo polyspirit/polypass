@@ -76,6 +76,11 @@ class GroupController extends Controller
 
     public function destroy(Group $group): \Illuminate\Http\RedirectResponse
     {
+        if ($group->credentials) {
+            $group->credentials()->delete();
+        }
+        $group->delete();
+
         return redirect()->route('groups.index');
     }
 }

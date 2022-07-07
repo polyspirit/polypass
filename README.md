@@ -1,2 +1,2 @@
-# Polypass
+# Polypass Alpha
 Credentials keeper

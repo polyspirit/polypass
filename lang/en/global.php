@@ -3,5 +3,9 @@
 return [
     'submit' => 'Submit',
     'edit' => 'Edit',
-    'delete' => 'Delete'
+    'delete' => 'Delete',
+    'type' => 'Type',
+    'icon' => 'Icon',
+    'actions' => 'Actions',
+    'action' => 'Action'
 ];
