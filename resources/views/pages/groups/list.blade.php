@@ -22,13 +22,9 @@
                 </th>
                 <td><a href="/groups/{{ $group->id }}">{{ $group->name }}</a></td>
                 <td class="d-flex align-items-stretch align-items-md-center justify-content-end gap-1">
-                    <form action="/credentials" method="POST" class="d-flex">
-                        @csrf
-                        <input type="hidden" name="group_id" value="{{$group->id}}">
-                        <button class="btn btn-primary" title="{{ __('credentials.create') }}">
-                            {{ __('credentials.create') }}
-                        </button>
-                    </form>
+                    <a href="/credentials/create?group_id={{$group->id}}" class="btn btn-primary">
+                        {{ __('credentials.create') }}
+                    </a>
                     <a href="/groups/{{ $group->id }}/edit" class="btn btn-primary">{{ __('global.edit') }}</a>
                     <form action="/groups/{{ $group->id }}" method="POST" class="d-flex">
                         @csrf
