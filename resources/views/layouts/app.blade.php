@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     @if (config('app.robots'))
         <meta name="robots" content="all">
     @else
@@ -82,6 +82,15 @@
                 </div>
             </div>
         </nav>
+
+        @if (config('app.demo'))
+            <div class="container mt-3">
+                <div class="alert alert-warning" role="alert">
+                    <h2>{{ __('warnings.warning') }}!</h2>
+                    <b>{{ __('warnings.demo') }}</b>
+                </div>
+            </div>
+        @endif
 
         @guest
             <main class="py-4">
