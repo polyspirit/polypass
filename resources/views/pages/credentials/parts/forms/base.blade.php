@@ -42,5 +42,11 @@
             'value' => isset($credential) ? $credential->note : '',
         ])
     </div>
-    <button type="submit" class="btn btn-primary">{{ __('global.submit') }}</button>
+    @if(empty($disabled))
+        <button type="submit" class="btn btn-primary">
+            {{ isset($credential) ? __('global.update') : __('global.submit') }}
+        </button>
+    @else
+        <a href="/credentials/{{ $credential->id }}/edit" class="btn btn-primary">{{ __('global.edit') }}</a>
+    @endif
 </form>

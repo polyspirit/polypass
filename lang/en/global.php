@@ -9,5 +9,7 @@ return [
     'type' => 'Type',
     'icon' => 'Icon',
     'actions' => 'Actions',
-    'action' => 'Action'
+    'action' => 'Action',
+    'copy' => 'Copy',
+    'copied' => 'Copied'
 ];

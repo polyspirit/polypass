@@ -40,7 +40,7 @@
             <tr>
                 <th scope="row">
                     @if ($credential->remote)
-                        <i class="fa-solid fa-server" title="{{ __('entities.credential') }}"></i>
+                        <i class="fa-solid fa-server" title="{{ __('credentials.remote') }}"></i>
                     @else
                         <i class="fa-solid fa-key" title="{{ __('entities.credential') }}"></i>
                     @endif

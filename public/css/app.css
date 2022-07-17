@@ -10300,3 +10300,40 @@ textarea.form-control-lg {
   display: flex;
   align-items: center;
 }
+
+.form-control[disabled], .form-select[disabled] {
+  cursor: pointer;
+}
+
+.form-notice {
+  margin-left: 10px;
+  opacity: 0;
+  -webkit-animation-name: notice;
+          animation-name: notice;
+  -webkit-animation-duration: 2s;
+          animation-duration: 2s;
+}
+
+@-webkit-keyframes notice {
+  0% {
+    opacity: 0;
+  }
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes notice {
+  0% {
+    opacity: 0;
+  }
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

@@ -14,7 +14,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Polypass') }}</title>
+    <title>{{ config('app.name', 'PolyPassword') }}</title>
 
     <!-- Scripts -->
     <script src="https://kit.fontawesome.com/4212cb2b11.js" crossorigin="anonymous"></script>

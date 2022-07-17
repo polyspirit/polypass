@@ -83,7 +83,14 @@ class CredentialController extends Controller
 
     public function show(Credential $credential): \Illuminate\Contracts\View\View
     {
-        return view('pages.credentials.detail', ['credential' => $credential, 'title' => __('credentials.detail')]);
+        return view(
+            'pages.credentials.detail', 
+            [
+                'groups' => $this->getGroupsOptions(),
+                'credential' => $credential, 
+                'title' => $credential->remote ? __('credentials.remote') : __('credentials.detail')
+            ]
+        );
     }
 
     public function edit(Credential $credential): \Illuminate\Contracts\View\View
