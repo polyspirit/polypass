@@ -17,6 +17,8 @@
             'value' => $user->email,
         ])
     </div>
+
+    @if (!config('app.demo') && empty($disabled))
     <div class="mb-3">
         @include('parts.fields.password', [
             'title' => __('signin.new_password'),
@@ -28,6 +30,8 @@
             'title' => __('signin.confirm_password'),
         ])
     </div>
+    @endif
+
     @can('users-change-roles-any')
         <div class="mb-3">
             @php
