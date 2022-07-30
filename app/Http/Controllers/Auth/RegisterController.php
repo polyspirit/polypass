@@ -80,6 +80,6 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-        return view('pages.errors.forbidden');
+        return view('pages.errors.forbidden', ['title' => __('errors.forbidden')]);
     }
 }

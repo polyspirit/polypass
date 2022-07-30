@@ -7,6 +7,9 @@ use App\Models\Credential;
 use App\Models\Remote;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
+
 class CredentialController extends Controller
 {
     protected $modelClassName = Credential::class;
@@ -23,9 +26,9 @@ class CredentialController extends Controller
         $groupRoot = Group::where('name', 'root')->first();
         $credentials = Credential::where(['group_id' => $groupRoot->id])->get();
         return view(
-            'pages.credentials.list', 
+            'pages.credentials.list',
             [
-                'groups' => Group::where('name', '!=' , 'root')->get(),
+                'groups' => Group::where('name', '!=', 'root')->get(),
                 'credentials' => $credentials,
                 'title' => __('credentials.list')
             ]
@@ -35,7 +38,7 @@ class CredentialController extends Controller
     public function create(Request $request): \Illuminate\Contracts\View\View
     {
         return view(
-            'pages.credentials.create', 
+            'pages.credentials.create',
             [
                 'groups' => $this->getGroupsOptions(),
                 'group_id' => $request->input('group_id'),
@@ -49,8 +52,8 @@ class CredentialController extends Controller
         $validationRules = [
             'group_id' => ['integer'],
             'name' => ['required', 'string', 'max:127', 'min:1'],
-            'login' => ['required', 'string', 'max:127', 'min:1'],
-            'password' => ['required', 'string', 'max:127', 'min:1']
+            'login' => ['required', 'string', 'max:31', 'min:1'],
+            'password' => ['required', 'string', 'max:31', 'min:1']
         ];
 
         if ($request->has('remote')) {
@@ -68,6 +71,8 @@ class CredentialController extends Controller
             $request->merge(['group_id' => $groupRoot->id]);
         }
 
+        $this->encryptData($request);
+
         $credential = Credential::create($request->all());
 
         if ($request->has('remote')) {
@@ -83,11 +88,13 @@ class CredentialController extends Controller
 
     public function show(Credential $credential): \Illuminate\Contracts\View\View
     {
+        $this->decryptData($credential);
+
         return view(
-            'pages.credentials.detail', 
+            'pages.credentials.detail',
             [
                 'groups' => $this->getGroupsOptions(),
-                'credential' => $credential, 
+                'credential' => $credential,
                 'title' => $credential->remote ? __('credentials.remote') : __('credentials.detail')
             ]
         );
@@ -95,8 +102,10 @@ class CredentialController extends Controller
 
     public function edit(Credential $credential): \Illuminate\Contracts\View\View
     {
+        $this->decryptData($credential);
+
         return view(
-            'pages.credentials.edit', 
+            'pages.credentials.edit',
             [
                 'groups' => $this->getGroupsOptions(),
                 'credential' => $credential,
@@ -110,8 +119,8 @@ class CredentialController extends Controller
         $validationRules = [
             'group_id' => ['integer'],
             'name' => ['string', 'max:127', 'min:1'],
-            'login' => ['string', 'max:127', 'min:1'],
-            'password' => ['string', 'max:127', 'min:1']
+            'login' => ['string', 'max:31', 'min:1'],
+            'password' => ['string', 'max:31', 'min:1']
         ];
 
         if ($request->has('remote')) {
@@ -123,6 +132,10 @@ class CredentialController extends Controller
         }
 
         $request->validate($validationRules);
+
+        if ($request->has('login') || $request->has('password')) {
+            $this->encryptData($request);
+        }
 
         $credential->update($request->all());
 
@@ -136,7 +149,7 @@ class CredentialController extends Controller
         }
 
         return redirect()->route(
-            'credentials.edit', 
+            'credentials.edit',
             ['credential' => $credential]
         )->with('status', __('credentials.message-updated'));
     }
@@ -162,5 +175,36 @@ class CredentialController extends Controller
         }
 
         return $groupsOptions;
+    }
+
+    private function encryptData(Request &$request): Request
+    {
+        if ($request->has('login')) {
+            $request->merge(['login' => Crypt::encryptString($request->login)]);
+        }
+
+        if ($request->has('password')) {
+            $request->merge(['password' => Crypt::encryptString($request->password)]);
+        }
+
+        return $request;
+    }
+
+    private function decryptData(Credential &$credential): Credential|\Illuminate\Contracts\View\View
+    {
+        try {
+            $credential->login = Crypt::decryptString($credential->login);
+            $credential->password = Crypt::decryptString($credential->password);
+        } catch (DecryptException $e) {
+            return view(
+                'pages.errors.error',
+                [
+                    'message' => $e->getMessage(),
+                    'title' => __('errors.error')
+                ]
+            );
+        }
+
+        return $credential;
     }
 }
