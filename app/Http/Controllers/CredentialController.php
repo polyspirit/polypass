@@ -37,11 +37,20 @@ class CredentialController extends Controller
 
     public function create(Request $request): \Illuminate\Contracts\View\View
     {
+        $breadcrumbs = ['/credentials/' => __('entities.credentials')];
+        if ($request->has('group_id')) {
+            $group = Group::find($request->input('group_id'));
+            if (!$group->isRoot()) {
+                $breadcrumbs['/groups/' . $group->id] = $group->name;
+            }
+        }
+
         return view(
             'pages.credentials.create',
             [
                 'groups' => $this->getGroupsOptions(),
                 'group_id' => $request->input('group_id'),
+                'breadcrumbs' => $breadcrumbs,
                 'title' => __('credentials.create')
             ]
         );
@@ -95,7 +104,8 @@ class CredentialController extends Controller
             [
                 'groups' => $this->getGroupsOptions(),
                 'credential' => $credential,
-                'title' => $credential->remote ? __('credentials.remote') : __('credentials.detail')
+                'breadcrumbs' => $this->getBreadcrumbs($credential),
+                'title' => $credential->name
             ]
         );
     }
@@ -109,7 +119,8 @@ class CredentialController extends Controller
             [
                 'groups' => $this->getGroupsOptions(),
                 'credential' => $credential,
-                'title' => __('credentials.edit')
+                'breadcrumbs' => $this->getBreadcrumbs($credential),
+                'title' => __('global.edit') . ' ' . $credential->name
             ]
         );
     }
@@ -206,5 +217,15 @@ class CredentialController extends Controller
         }
 
         return $credential;
+    }
+
+    private function getBreadcrumbs(Credential $credential): array
+    {
+        $breadcrumbs = ['/credentials/' => __('entities.credentials')];
+        if (!$credential->group->isRoot()) {
+            $breadcrumbs['/groups/' . $credential->group->id] = $credential->group->name;
+        }
+
+        return $breadcrumbs;
     }
 }

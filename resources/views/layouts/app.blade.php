@@ -105,12 +105,27 @@
                             <div class="card">
                                 <div class="card-header">
                                     <h1>
-                                        @if (isset($title))
-                                            {{ $title }}
-                                        @else
-                                            {{ __('global.dashboard') }}
-                                        @endif
+                                        {{ $title ?? __('global.dashboard') }}
                                     </h1>
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb">
+                                            @if (isset($title))
+                                                <li class="breadcrumb-item">
+                                                    <a href="/">{{ __('global.dashboard') }}</a>
+                                                </li>
+                                            @endif
+                                            @if (isset($breadcrumbs))
+                                                @foreach ($breadcrumbs as $bcUrl => $bcTitle)
+                                                    <li class="breadcrumb-item">
+                                                        <a href="{{ $bcUrl }}">{{ $bcTitle }}</a>
+                                                    </li>
+                                                @endforeach
+                                            @endif
+                                            <li class="breadcrumb-item active" aria-current="page">
+                                                {{ $title ?? __('global.dashboard') }}
+                                            </li>
+                                        </ol>
+                                    </nav>
                                 </div>
                                 <div class="card-body">
                                     @if (session('status'))

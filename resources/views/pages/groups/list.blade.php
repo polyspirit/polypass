@@ -3,7 +3,7 @@
 @section('content')
 
 @can('create', App\Models\Group::class)
-<a href="groups/create" class="btn btn-primary mb-4">{{__('groups.create') }}</a>
+<a href="/groups/create" class="btn btn-primary mb-4">{{__('groups.create') }}</a>
 @endcan
 <div class="table-responsive">
     <table class="table table-light">

@@ -17,4 +17,10 @@ class Group extends Model
     {
         return $this->hasMany(Credential::class);
     }
+
+    // OTHER
+    public function isRoot()
+    {
+        return ($this->name === 'root');
+    }
 }

@@ -29,7 +29,13 @@ class GroupController extends Controller
 
     public function create(): \Illuminate\Contracts\View\View
     {
-        return view('pages.groups.create', ['title' => __('groups.create')]);
+        return view(
+            'pages.groups.create', 
+            [
+                'breadcrumbs' => $this->getBreadcrumbs(),
+                'title' => __('groups.create')
+            ]
+        );
     }
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
@@ -47,7 +53,14 @@ class GroupController extends Controller
 
     public function show(Group $group): \Illuminate\Contracts\View\View
     {
-        return view('pages.groups.detail', ['group' => $group, 'title' => __('entities.group')]);
+        return view(
+            'pages.groups.detail', 
+            [
+                'group' => $group, 
+                'breadcrumbs' => $this->getBreadcrumbs(),
+                'title' => $group->name
+            ]
+        );
     }
 
     public function edit(Group $group): \Illuminate\Contracts\View\View
@@ -56,7 +69,8 @@ class GroupController extends Controller
             'pages.groups.edit',
             [
                 'group' => $group,
-                'title' => __('groups.edit')
+                'breadcrumbs' => $this->getBreadcrumbs(),
+                'title' => __('groups.edit') . ' ' . $group->name
             ]
         );
     }
@@ -82,5 +96,13 @@ class GroupController extends Controller
         $group->delete();
 
         return redirect()->route('groups.index');
+    }
+
+
+    // OTHER
+    
+    private function getBreadcrumbs(): array
+    {
+        return ['/groups/' => __('entities.groups')];
     }
 }
