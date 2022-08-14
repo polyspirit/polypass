@@ -17,5 +17,8 @@
         </button>
     @else
         <a href="/groups/{{ $group->id }}/edit" class="btn btn-primary">{{ __('global.edit') }}</a>
+        <a href="/credentials/create?group_id={{$group->id}}" class="btn btn-primary">
+            {{ __('credentials.create') }}
+        </a>
     @endif
 </form>
