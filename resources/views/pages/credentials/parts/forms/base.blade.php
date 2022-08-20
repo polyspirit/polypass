@@ -42,7 +42,14 @@
             'value' => isset($credential) ? $credential->note : '',
         ])
     </div>
-    @if(empty($disabled))
+    <div class="mb-3">
+        @include('parts.fields.checkbox', [
+            'name' => 'favorite',
+            'title' => __('credentials.favorite'),
+            'value' => isset($credential) ? $credential->favorite : 0,
+        ])
+    </div>
+    @if (empty($disabled))
         <button type="submit" class="btn btn-primary">
             {{ isset($credential) ? __('global.update') : __('global.submit') }}
         </button>

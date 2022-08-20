@@ -10314,6 +10314,13 @@ textarea.form-control-lg {
           animation-duration: 2s;
 }
 
+.form-check {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
 @-webkit-keyframes notice {
   0% {
     opacity: 0;

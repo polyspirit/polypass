@@ -74,9 +74,18 @@
                 ])
             </div>
         </div>
+        <div class="row mb-3">
+            <div class="col">
+                @include('parts.fields.checkbox', [
+                    'name' => 'favorite',
+                    'title' => __('credentials.favorite'),
+                    'value' => isset($credential) ? $credential->favorite : 0,
+                ])
+            </div>
+        </div>
     </div>
     <input type="hidden" name="remote" value="1">
-    @if(empty($disabled))
+    @if (empty($disabled))
         <button type="submit" class="btn btn-primary">
             {{ isset($credential) ? __('global.update') : __('global.submit') }}
         </button>

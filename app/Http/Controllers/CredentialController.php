@@ -58,11 +58,14 @@ class CredentialController extends Controller
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
+        $request->merge(['favorite' => $request->has('favorite')]);
+        
         $validationRules = [
             'group_id' => ['integer'],
             'name' => ['required', 'string', 'max:127', 'min:1'],
             'login' => ['required', 'string', 'max:31', 'min:1'],
-            'password' => ['required', 'string', 'max:31', 'min:1']
+            'password' => ['required', 'string', 'max:31', 'min:1'],
+            'favorite' => ['boolean']
         ];
 
         if ($request->has('remote')) {
@@ -127,11 +130,14 @@ class CredentialController extends Controller
 
     public function update(Request $request, Credential $credential): \Illuminate\Http\RedirectResponse
     {
+        $request->merge(['favorite' => $request->has('favorite')]);
+
         $validationRules = [
             'group_id' => ['integer'],
             'name' => ['string', 'max:127', 'min:1'],
             'login' => ['string', 'max:31', 'min:1'],
-            'password' => ['string', 'max:31', 'min:1']
+            'password' => ['string', 'max:31', 'min:1'],
+            'favorite' => ['boolean']
         ];
 
         if ($request->has('remote')) {

@@ -2,6 +2,7 @@
 
 @section('content')
 
-@include('layouts.menu')
+<h3>{{ __('credentials.favorite') }}</h3>
+@include('pages.credentials.parts.list', ['credentials' => $credentials])
 
 @endsection

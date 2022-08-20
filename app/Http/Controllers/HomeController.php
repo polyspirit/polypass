@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Credential;
 
 class HomeController extends Controller
 {
@@ -23,6 +24,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home', ['user' => auth()->user()]);
+        $credentials = Credential::where('favorite', true)->get();
+
+        return view('home', [
+            'user' => auth()->user(),
+            'credentials' => $credentials
+        ]);
     }
 }
