@@ -10279,7 +10279,7 @@ textarea.form-control-lg {
   padding-right: 1.8rem;
 }
 
-.password-wrapper > .password-eye {
+.password-wrapper > .password-icons {
   position: absolute;
   display: flex;
   align-items: center;
@@ -10287,12 +10287,11 @@ textarea.form-control-lg {
   top: 50%;
   right: 2%;
   margin-top: -0.6rem;
-  width: 1.2rem;
   height: 1.2rem;
   cursor: pointer;
 }
-
-.password-wrapper > .password-eye > .fa-regular {
+.password-wrapper > .password-icons i {
+  margin-left: 0.5rem;
   font-size: 1rem;
 }
 

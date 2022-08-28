@@ -54,6 +54,7 @@
                             {{ $credential->name }}
                         </a>
                     </td>
+                    @if (!isset($groups))
                     <td>
                         <a href="/groups/{{ $credential->group->id }}">
                             @if (!$credential->group->isRoot())
@@ -61,6 +62,7 @@
                             @endif
                         </a>
                     </td>
+                    @endif
                     <td class="d-flex align-items-stretch align-items-md-center justify-content-end gap-1">
                         <a href="/credentials/{{ $credential->id }}/edit"
                             class="btn btn-primary">{{ __('global.edit') }}</a>

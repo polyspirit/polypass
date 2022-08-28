@@ -7,7 +7,11 @@ class FormControl {
         this.label = this.wrapper.querySelector('.form-label');
 
         if (control.disabled) {
-            control.parentNode.onclick = this.copyValue.bind(this);
+            control.parentNode.onclick = e => {
+                if (e.target == control) {
+                    this.copyValue();
+                }
+            }
         }
         
     }
