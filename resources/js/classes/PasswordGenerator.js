@@ -6,11 +6,11 @@ class PasswordGenerator {
         this.chars = '';
 
         this.types = {
-            digits: '0123456789',
-            lettersLower: 'abcdefghijklmnopqrstuvwxyz',
-            lettersUpper: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            symbols: '!@#$%-_',
-            symbolsExtended: '^&*()+~№;%:?=[]{}\|/,.<>'
+            'digits': '0123456789',
+            'letters-lower': 'abcdefghijklmnopqrstuvwxyz',
+            'letters-upper': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            'symbols': '!@#$%-_',
+            'symbols-extended': '^&*()+~№;%:?=[]{}\|/,.<>'
         };
 
         if (charsTypes.length === 0) {

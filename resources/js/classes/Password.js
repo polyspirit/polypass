@@ -1,4 +1,4 @@
-const PasswordGenerator =  require('./PasswordGenerator');
+const PasswordGenerator = require('./PasswordGenerator');
 
 class Password {
 

@@ -1,6 +1,7 @@
 @php
 $title = $title ?? '';
 $value = $value ?? '';
+$cssClass = $css_class ?? '';
 $type = $type ?? 'text';
 $disabled = $disabled ?? '';
 $attrTitleValue = $disabled ? __('global.copy') . ' ' . $title : $title;
@@ -10,7 +11,7 @@ $attrTitleValue = $disabled ? __('global.copy') . ' ' . $title : $title;
         <label for="text-{{ $name }}" class="form-label"
             data-copied="{{ __('global.copied') }}">{{ $title }}</label>
     @endif
-    <input type="{{ $type }}" name="{{ $name }}" class="form-control @error($name) is-invalid @enderror"
+    <input type="{{ $type }}" name="{{ $name }}" class="form-control @error($name) is-invalid @enderror {{ $cssClass }}"
         id="text-{{ $name }}" aria-describedby="{{ $name }}Help" value="{{ $value }}"
         title="{{ $attrTitleValue }}" {{ $disabled }}>
 </div>
