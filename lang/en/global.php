@@ -12,5 +12,6 @@ return [
     'action' => 'Action',
     'copy' => 'Copy',
     'copied' => 'Copied',
-    'to_main' => 'To main page'
+    'to_main' => 'To main page',
+    'include' => 'Include'
 ];

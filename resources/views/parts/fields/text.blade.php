@@ -1,11 +1,15 @@
 @php
+$title = $title ?? '';
 $value = $value ?? '';
 $type = $type ?? 'text';
 $disabled = $disabled ?? '';
 $attrTitleValue = $disabled ? __('global.copy') . ' ' . $title : $title;
 @endphp
 <div class="form-control-wrapper">
-    <label for="text-{{ $name }}" class="form-label" data-copied="{{ __('global.copied') }}">{{ $title }}</label>
+    @if (isset($title))
+        <label for="text-{{ $name }}" class="form-label"
+            data-copied="{{ __('global.copied') }}">{{ $title }}</label>
+    @endif
     <input type="{{ $type }}" name="{{ $name }}" class="form-control @error($name) is-invalid @enderror"
         id="text-{{ $name }}" aria-describedby="{{ $name }}Help" value="{{ $value }}"
         title="{{ $attrTitleValue }}" {{ $disabled }}>

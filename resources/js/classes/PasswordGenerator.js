@@ -9,12 +9,15 @@ class PasswordGenerator {
             digits: '0123456789',
             lettersLower: 'abcdefghijklmnopqrstuvwxyz',
             lettersUpper: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-            symbols: '!@#$%^&*()',
+            symbols: '!@#$%-_',
+            symbolsExtended: '^&*()+~№;%:?=[]{}\|/,.<>'
         };
 
         if (charsTypes.length === 0) {
             for (let type in this.types) {
-                this.chars += this.types[type];
+                if (type !== 'symbolsExtended') {
+                    this.chars += this.types[type];
+                }
             }
         } else {
             charsTypes.forEach(type => {
@@ -23,10 +26,6 @@ class PasswordGenerator {
                 }
             });
         }
-    }
-
-    static init() {
-
     }
 
     generate() {
