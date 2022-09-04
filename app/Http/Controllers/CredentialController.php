@@ -63,8 +63,8 @@ class CredentialController extends Controller
         $validationRules = [
             'group_id' => ['integer'],
             'name' => ['required', 'string', 'max:127', 'min:1'],
-            'login' => ['required', 'string', 'max:31', 'min:1'],
-            'password' => ['required', 'string', 'max:31', 'min:1'],
+            'login' => ['required', 'string', 'max:127', 'min:1'],
+            'password' => ['required', 'string', 'max:127', 'min:1'],
             'favorite' => ['boolean']
         ];
 
@@ -135,8 +135,8 @@ class CredentialController extends Controller
         $validationRules = [
             'group_id' => ['integer'],
             'name' => ['string', 'max:127', 'min:1'],
-            'login' => ['string', 'max:31', 'min:1'],
-            'password' => ['string', 'max:31', 'min:1'],
+            'login' => ['string', 'max:127', 'min:1'],
+            'password' => ['string', 'max:127', 'min:1'],
             'favorite' => ['boolean']
         ];
 

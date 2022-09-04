@@ -1,5 +1,6 @@
 @php
 $value = $value ?? 0;
+$title = $title ?? '';
 $disabled = $disabled ?? '';
 $checked = $value ? 'checked' : '';
 $randomId = rand(1, 999);
