@@ -25,6 +25,7 @@ class HomeController extends Controller
     public function index()
     {
         $credentials = Credential::where('favorite', true)->get();
+        $this->checkItemsPolicy($credentials);
 
         return view('home', [
             'user' => auth()->user(),

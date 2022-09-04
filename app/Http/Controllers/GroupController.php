@@ -18,10 +18,13 @@ class GroupController extends Controller
     // API
     public function index(): \Illuminate\Contracts\View\View
     {
+        $groups = Group::where('name', '!=', 'root')->get();
+        $this->checkItemsPolicy($groups);
+
         return view(
             'pages.groups.list', 
             [
-                'groups' => Group::where('name', '!=', 'root')->get(),
+                'groups' => $groups,
                 'title' => __('entities.groups')
             ]
         );
@@ -40,6 +43,8 @@ class GroupController extends Controller
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
+        $request->merge(['user_id' => auth()->user()->id]);
+
         $validationRules = [
             'name' => ['required', 'string', 'max:127', 'min:1']
         ];

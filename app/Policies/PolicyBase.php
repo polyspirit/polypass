@@ -29,9 +29,17 @@ class PolicyBase
         return $this->checkPermission($user, 'create');
     }
 
-    protected function checkPermission(User $user, string $permission): \Illuminate\Auth\Access\Response
+    protected function checkPermission(User $user, string $permission, $entity = null): \Illuminate\Auth\Access\Response
     {
         if ($user->hasPermissionTo($this->entitiesName . '-' . $permission)) {
+            if (isset($entity)) {
+                if ($entity->user->id === $user->id) {
+                    return Response::allow();
+                } else {
+                    return Response::deny('Wrong user! ', 403);
+                }
+            }
+
             return Response::allow();
         }
 

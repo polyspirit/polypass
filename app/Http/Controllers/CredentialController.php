@@ -25,10 +25,15 @@ class CredentialController extends Controller
     {
         $groupRoot = Group::where('name', 'root')->first();
         $credentials = Credential::where(['group_id' => $groupRoot->id])->get();
+        $this->checkItemsPolicy($credentials);
+
+        $groups = Group::where('name', '!=', 'root')->get();
+        $this->checkItemsPolicy($groups);
+
         return view(
             'pages.credentials.list',
             [
-                'groups' => Group::where('name', '!=', 'root')->get(),
+                'groups' => $groups,
                 'credentials' => $credentials,
                 'title' => __('credentials.list')
             ]
@@ -58,6 +63,7 @@ class CredentialController extends Controller
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
+        $request->merge(['user_id' => auth()->user()->id]);
         $request->merge(['favorite' => $request->has('favorite')]);
         
         $validationRules = [

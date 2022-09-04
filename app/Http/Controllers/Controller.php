@@ -7,6 +7,8 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
+use Illuminate\Support\Facades\Gate;
+
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
@@ -47,5 +49,30 @@ class Controller extends BaseController
     protected function checkAuthorization(): void
     {
         $this->authorizeResource($this->modelClassName, $this->entityName);
+    }
+
+    /**
+     * Check view policy for each in items collection.
+     */
+    protected function checkItemsPolicy(\Illuminate\Database\Eloquent\Collection &$items): void
+    {
+        foreach ($items as $key => $item) {
+           $this->checkItemPolicy($item);
+           if (is_null($item)) {
+                $items->forget($key);
+           }
+        }
+    }
+
+    /**
+     * Check item policy by view method and set to null if not allowed.
+     */
+    protected function checkItemPolicy(\Illuminate\Database\Eloquent\Model &$item): void
+    {
+        $response = Gate::inspect('view', $item);
+
+        if (!$response->allowed()) {
+            $item = null;
+        }
     }
 }
