@@ -9,3 +9,14 @@
 
 // Styles
 @import 'form';
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+
+    img {
+        margin-right: 10px;
+        height: 32px;
+        width: auto;
+    }
+}

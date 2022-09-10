@@ -12,7 +12,9 @@
             @csrf
             @method('DELETE')
 
-            <button type="submit" class="btn btn-danger">{{ __('global.delete') }}</button>
+            <button type="submit" class="btn btn-danger" title="{{ __('global.delete') }}">
+                <i class="fa-regular fa-trash-can"></i>
+            </button>
         </form>
     @endcan
 @endsection

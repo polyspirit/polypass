@@ -10343,3 +10343,12 @@ textarea.form-control-lg {
     opacity: 0;
   }
 }
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+.navbar-brand img {
+  margin-right: 10px;
+  height: 32px;
+  width: auto;
+}
