@@ -119,8 +119,6 @@ class CredentialController extends Controller
 
     public function edit(Credential $credential): \Illuminate\Contracts\View\View
     {
-        $this->decryptData($credential);
-
         return view(
             'pages.credentials.edit',
             [
