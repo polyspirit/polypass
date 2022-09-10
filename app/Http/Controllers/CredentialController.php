@@ -26,9 +26,6 @@ class CredentialController extends Controller
         $groupRoot = Group::where('name', 'root')->first();
         $credentials = Credential::where(['group_id' => $groupRoot->id])->get();
         $this->checkItemsPolicy($credentials);
-        $credentials->each(function ($credential) {
-            $this->decryptData($credential);
-        });
 
         $groups = Group::where('name', '!=', 'root')->get();
         $this->checkItemsPolicy($groups);
@@ -109,8 +106,6 @@ class CredentialController extends Controller
 
     public function show(Credential $credential): \Illuminate\Contracts\View\View
     {
-        $this->decryptData($credential);
-
         return view(
             'pages.credentials.detail',
             [
@@ -214,24 +209,6 @@ class CredentialController extends Controller
         }
 
         return $request;
-    }
-
-    private function decryptData(Credential &$credential): Credential|\Illuminate\Contracts\View\View
-    {
-        try {
-            $credential->login = Crypt::decryptString($credential->login);
-            $credential->password = Crypt::decryptString($credential->password);
-        } catch (DecryptException $e) {
-            return view(
-                'pages.errors.error',
-                [
-                    'message' => $e->getMessage(),
-                    'title' => __('errors.error')
-                ]
-            );
-        }
-
-        return $credential;
     }
 
     private function getBreadcrumbs(Credential $credential): array
