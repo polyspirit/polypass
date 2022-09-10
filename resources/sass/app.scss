@@ -20,3 +20,24 @@
         width: auto;
     }
 }
+
+.notices {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 11;
+
+    & > div {
+        margin-bottom: 20px;
+        opacity: 0;
+        transform: translateY(-10px);
+        animation-name: notice;
+        animation-duration: 4s;
+    }
+}
+
+@keyframes notice {
+    0%   {opacity: 0; transform: translateY(-10px);}
+    50%  {opacity: 1; transform: translateY(0px);}
+    100% {opacity: 0; transform: translateY(-10px);}
+}

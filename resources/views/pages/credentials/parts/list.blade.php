@@ -4,10 +4,12 @@
             <tr>
                 <th scope="col" width="50">{{ __('global.type') }}</th>
                 <th scope="col">{{ __('credentials.name') }}</th>
+                <th scope="col">{{ __('credentials.login') }}</th>
+                <th scope="col">{{ __('credentials.password') }}</th>
                 @if (!isset($groups))
                     <th scope="col">{{ __('credentials.group') }}</th>
                 @endif
-                <th scope="col" width="400" class="text-end">{{ __('global.actions') }}</th>
+                <th scope="col" width="300" class="text-end">{{ __('global.actions') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -17,7 +19,7 @@
                         <th scope="row">
                             <i class="fa-regular fa-folder" title="{{ __('entities.group') }}"></i>
                         </th>
-                        <td>
+                        <td colspan="3">
                             <a href="/groups/{{ $group->id }}">
                                 <b>{{ $group->name }}</b>
                             </a>
@@ -55,6 +57,12 @@
                         <a href="/credentials/{{ $credential->id }}">
                             {{ $credential->name }}
                         </a>
+                    </td>
+                    <td class="js-copy-text" role="button" title="{{ __('global.copy') }}">
+                        {{ $credential->login }}
+                    </td>
+                    <td class="js-copy-data" role="button" data-value="{{ $credential->password }}"  title="{{ __('global.copy') }}">
+                        ******
                     </td>
                     @if (!isset($groups))
                         <td>

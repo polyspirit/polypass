@@ -1,3 +1,5 @@
+const Copier = require('./Copier');
+
 class FormControl {
 
     constructor(control) {
@@ -17,7 +19,7 @@ class FormControl {
     }
 
     copyValue() {
-        navigator.clipboard.writeText(this.control.value);
+        Copier.copy(this.control.value);
         this.showNotice();
     }
 

@@ -8,17 +8,19 @@ class PasswordGeneratorForm {
         this.size = 12;
 
         this.fieldPass = document.querySelector('#text-generated-password');
-        this.btnUpdate = document.querySelector('.js-generator-update');
-        this.btnCopy = document.querySelector('.js-generator-copy');
-        this.sizeRange = document.querySelector('.js-generator-size');
-        this.sizeBadge = document.querySelector('.js-generator-size-badge');
-        this.checkboxes = document.querySelectorAll('.js-generator-checkboxes .form-check-input');
+        if (this.fieldPass) {
+            this.btnUpdate = document.querySelector('.js-generator-update');
+            this.btnCopy = document.querySelector('.js-generator-copy');
+            this.sizeRange = document.querySelector('.js-generator-size');
+            this.sizeBadge = document.querySelector('.js-generator-size-badge');
+            this.checkboxes = document.querySelectorAll('.js-generator-checkboxes .form-check-input');
 
-        this.btnUpdate.onclick = this.generate.bind(this);
-        this.btnCopy.onclick = this.copy.bind(this);
-        this.sizeRange.oninput = this.changeSize.bind(this);
+            this.btnUpdate.onclick = this.generate.bind(this);
+            this.btnCopy.onclick = this.copy.bind(this);
+            this.sizeRange.oninput = this.changeSize.bind(this);
 
-        this.generate();
+            this.generate();
+        }
     }
 
     changeSize() {

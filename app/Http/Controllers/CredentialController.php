@@ -26,6 +26,9 @@ class CredentialController extends Controller
         $groupRoot = Group::where('name', 'root')->first();
         $credentials = Credential::where(['group_id' => $groupRoot->id])->get();
         $this->checkItemsPolicy($credentials);
+        $credentials->each(function ($credential) {
+            $this->decryptData($credential);
+        });
 
         $groups = Group::where('name', '!=', 'root')->get();
         $this->checkItemsPolicy($groups);
@@ -61,7 +64,7 @@ class CredentialController extends Controller
         );
     }
 
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(Request $request): \Illuminate\Contracts\View\View
     {
         $request->merge(['user_id' => auth()->user()->id]);
         $request->merge(['favorite' => $request->has('favorite')]);
@@ -101,7 +104,7 @@ class CredentialController extends Controller
             ]);
         }
 
-        return redirect()->route('credentials.index');
+        return $this->show($credential);
     }
 
     public function show(Credential $credential): \Illuminate\Contracts\View\View

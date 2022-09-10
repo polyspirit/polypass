@@ -33,7 +33,7 @@
 .form-notice {
     margin-left: 10px;
     opacity: 0;
-    animation-name: notice;
+    animation-name: form-notice;
     animation-duration: 2s;
 }
 
@@ -41,8 +41,8 @@
     user-select: none;
 }
 
-@keyframes notice {
+@keyframes form-notice {
     0%   {opacity: 0;}
-    0%   {opacity: 1;}
+    50%  {opacity: 1;}
     100% {opacity: 0;}
 }

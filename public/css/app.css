@@ -10307,8 +10307,8 @@ textarea.form-control-lg {
 .form-notice {
   margin-left: 10px;
   opacity: 0;
-  -webkit-animation-name: notice;
-          animation-name: notice;
+  -webkit-animation-name: form-notice;
+          animation-name: form-notice;
   -webkit-animation-duration: 2s;
           animation-duration: 2s;
 }
@@ -10320,11 +10320,11 @@ textarea.form-control-lg {
           user-select: none;
 }
 
-@-webkit-keyframes notice {
+@-webkit-keyframes form-notice {
   0% {
     opacity: 0;
   }
-  0% {
+  50% {
     opacity: 1;
   }
   100% {
@@ -10332,11 +10332,11 @@ textarea.form-control-lg {
   }
 }
 
-@keyframes notice {
+@keyframes form-notice {
   0% {
     opacity: 0;
   }
-  0% {
+  50% {
     opacity: 1;
   }
   100% {
@@ -10351,4 +10351,50 @@ textarea.form-control-lg {
   margin-right: 10px;
   height: 32px;
   width: auto;
+}
+
+.notices {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 11;
+}
+.notices > div {
+  margin-bottom: 20px;
+  opacity: 0;
+  transform: translateY(-10px);
+  -webkit-animation-name: notice;
+          animation-name: notice;
+  -webkit-animation-duration: 4s;
+          animation-duration: 4s;
+}
+
+@-webkit-keyframes notice {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes notice {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
 }
