@@ -2,12 +2,18 @@
 $value = $value ?? '';
 $disabled = $disabled ?? '';
 $attrTitleValue = $disabled ? __('global.copy') . ' ' . $title : $title;
+$cssClass = !empty($css_class) ? 'form-select ' . $css_class : 'form-select';
 @endphp
 <div class="form-control-wrapper">
-    <label for="select-{{ $name }}" class="form-label" data-copied="{{ __('global.copied') }}">{{ $title }}</label>
-    <select class="form-select @error($name) is-invalid @enderror" name="{{ $name }}" aria-describedby="statusHelp"
+    <label for="select-{{ $name }}" class="form-label"
+        data-copied="{{ __('global.copied') }}">{{ $title }}</label>
+    <select class="{{ $cssClass }} @error($name) is-invalid @enderror" name="{{ $name }}" aria-describedby="statusHelp"
         id="select-{{ $name }}" title="{{ $attrTitleValue }}" {{ $disabled }}>
-        @if (isAssociative($options))
+        @if (isset($handler) && is_callable($handler))
+            @foreach ($options as $key => $option)
+                {!! $handler($key, $option) !!}
+            @endforeach
+        @elseif (isAssociative($options))
             @foreach ($options as $option => $optionName)
                 @if ($value)
                     <option value="{{ $option }}" @selected($value == $option)>

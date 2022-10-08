@@ -10,7 +10,10 @@ class Remote extends Model
     protected $guarded = ['id'];
     public $timestamps = false;
 
-    const PROTOCOLS = ['ssh', 'ftp'];
+    const PROTOCOLS = [
+        'ssh' => 22, 
+        'ftp' => 21
+    ];
     
 
     // RELATIONS

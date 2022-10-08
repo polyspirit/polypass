@@ -8,7 +8,6 @@ use App\Models\Remote;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Contracts\Encryption\DecryptException;
 
 class CredentialController extends Controller
 {
@@ -100,6 +99,8 @@ class CredentialController extends Controller
                 'protocol' => $request->input('protocol')
             ]);
         }
+
+        $credential->decrypt($credential);
 
         return $this->show($credential);
     }

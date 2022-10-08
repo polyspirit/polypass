@@ -38,15 +38,31 @@
                     'name' => 'port',
                     'title' => __('remote.port'),
                     'value' => isset($credential->remote) ? $credential->remote->port : '',
+                    'css_class' => 'js-port-field',
                 ])
             </div>
             <div class="col-3">
+                @php
+                    $selectedProtocol = isset($credential->remote) ? $credential->remote->protocol : '';
+                @endphp
                 @include('parts.fields.select', [
                     'name' => 'protocol',
                     'title' => __('remote.protocol'),
                     'options' => \App\Models\Remote::PROTOCOLS,
-                    'optionsLocalization' => 'remote.protocols.',
-                    'value' => isset($credential->remote) ? $credential->remote->protocol : '',
+                    'css_class' => 'js-protocol-select',
+                    'handler' => function ($protocol, $port) use ($selectedProtocol) {
+                        $selected = '';
+                        $selected = $selectedProtocol === $protocol ? ' selected' : '';
+                        return '<option value="' .
+                            $protocol .
+                            '"' .
+                            $selected .
+                            ' data-port="' .
+                            $port .
+                            '">' .
+                            $protocol .
+                            '</option>';
+                    },
                 ])
             </div>
         </div>
