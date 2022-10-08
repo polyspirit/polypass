@@ -3,11 +3,10 @@
 @section('content')
 
 <h3>{{ __('credentials.favorite') }}</h3>
-@include('pages.credentials.parts.list', ['credentials' => $credentials])
+@include('pages.credentials.parts.list', ['credentials' => $favorites, 'groups' => null])
 
 <hr>
-
-<h3>{{ __('generator.password-generator') }}</h3>
-@include('parts.generator', ['credentials' => $credentials])
+<h3>{{ __('entities.credentials') }}</h3>
+@include('pages.credentials.parts.list', ['credentials' => $credentials])
 
 @endsection

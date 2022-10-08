@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Credential;
+use App\Models\Group;
 
 class HomeController extends Controller
 {
@@ -24,12 +25,21 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $credentials = Credential::where('favorite', true)->get();
+        $groupRoot = Group::where('name', 'root')->first();
+        $credentials = Credential::where(['group_id' => $groupRoot->id])->get();
         $this->checkItemsPolicy($credentials);
+
+        $groups = Group::where('name', '!=', 'root')->get();
+        $this->checkItemsPolicy($groups);
+
+        $favorites = Credential::where('favorite', true)->get();
+        $this->checkItemsPolicy($favorites);
 
         return view('home', [
             'user' => auth()->user(),
-            'credentials' => $credentials
+            'groups' => $groups,
+            'credentials' => $credentials,
+            'favorites' => $favorites
         ]);
     }
 }

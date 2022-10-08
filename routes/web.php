@@ -22,6 +22,8 @@ Auth::routes();
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::group(['middleware' => ['auth']], function () {
+
+    Route::view('/generator', 'pages.generator', ['title' => __('generator.password-generator')]);
     
     Route::resources([
         'users' => UserController::class,
