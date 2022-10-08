@@ -13,5 +13,7 @@ return [
     'copy' => 'Copy',
     'copied' => 'Copied',
     'to_main' => 'To main page',
-    'include' => 'Include'
+    'include' => 'Include',
+    'view' => 'View',
+    'link' => 'Link'
 ];

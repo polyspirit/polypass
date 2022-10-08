@@ -70,6 +70,7 @@ class CredentialController extends Controller
             'name' => ['required', 'string', 'max:127', 'min:1'],
             'login' => ['required', 'string', 'max:127', 'min:1'],
             'password' => ['required', 'string', 'max:127', 'min:1'],
+            'url' => ['string', 'max:255'],
             'favorite' => ['boolean']
         ];
 
@@ -140,6 +141,7 @@ class CredentialController extends Controller
             'name' => ['string', 'max:127', 'min:1'],
             'login' => ['string', 'max:127', 'min:1'],
             'password' => ['string', 'max:127', 'min:1'],
+            'url' => ['string', 'max:255'],
             'favorite' => ['boolean']
         ];
 

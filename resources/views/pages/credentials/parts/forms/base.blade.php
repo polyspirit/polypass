@@ -36,6 +36,13 @@
         ])
     </div>
     <div class="mb-3">
+        @include('parts.fields.text', [
+            'name' => 'url',
+            'title' => __('global.link'),
+            'value' => isset($credential) ? $credential->url : '',
+        ])
+    </div>
+    <div class="mb-3">
         @include('parts.fields.textarea', [
             'name' => 'note',
             'title' => __('credentials.note'),

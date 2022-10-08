@@ -7,6 +7,10 @@ class CredentialRemote {
 
         if (this.portField && this.protocolSelect) {
             this.protocolSelect.onchange = this.changePort.bind(this);
+
+            if (!this.portField.value) {
+                this.changePort();
+            }
         }
     }
 

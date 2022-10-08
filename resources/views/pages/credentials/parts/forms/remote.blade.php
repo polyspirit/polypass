@@ -81,6 +81,17 @@
                 ])
             </div>
         </div>
+
+        <div class="row mb-3">
+            <div class="col">
+                @include('parts.fields.text', [
+                    'name' => 'url',
+                    'title' => __('global.link'),
+                    'value' => isset($credential) ? $credential->url : '',
+                ])
+            </div>
+        </div>
+        
         <div class="row mb-3">
             <div class="col">
                 @include('parts.fields.textarea', [
