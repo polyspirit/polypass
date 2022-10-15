@@ -8,13 +8,9 @@
     @endcan
 
     @can('delete', $group)
-        <form action="/groups/{{ $group->id }}" method="POST" class="mt-3">
+        <form action="/groups/{{ $group->id }}" method="POST" class="hidden-form mt-3" id="group-{{ $group->id }}-delete">
             @csrf
             @method('DELETE')
-
-            <button type="submit" class="btn btn-danger" title="{{ __('global.delete') }}">
-                <i class="fa-regular fa-trash-can"></i>
-            </button>
         </form>
     @endcan
 @endsection

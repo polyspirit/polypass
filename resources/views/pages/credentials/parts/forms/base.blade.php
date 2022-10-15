@@ -4,6 +4,10 @@
         @method($method)
     @endif
 
+    @include('pages.credentials.parts.buttons', [
+        'disabled' => $disabled ?? null,
+        'credential' => $credential ?? null
+    ])
     <div class="mb-3">
         @php
             $groupId = $group_id ?? (isset($credential) && $credential->group->name !== 'root' ? $credential->group->id : '');
@@ -56,11 +60,4 @@
             'value' => isset($credential) ? $credential->favorite : 0,
         ])
     </div>
-    @if (empty($disabled))
-        <button type="submit" class="btn btn-primary">
-            {{ isset($credential) ? __('global.update') : __('global.submit') }}
-        </button>
-    @else
-        <a href="/credentials/{{ $credential->id }}/edit" class="btn btn-primary">{{ __('global.edit') }}</a>
-    @endif
 </form>

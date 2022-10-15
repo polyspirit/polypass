@@ -32,8 +32,30 @@
         opacity: 0;
         transform: translateY(-10px);
         animation-name: notice;
-        animation-duration: 4s;
+        animation-duration: 2s;
     }
+}
+
+.table-responsive {
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+
+.table-responsive .table {
+    margin-bottom: 0;
+}
+
+.table-responsive tr > td, .table-responsive tr > th {
+    transition: all .4s linear;
+    background-color: var(--bs-table-bg);
+}
+
+.table-responsive tr:hover > td, .table-responsive tr:hover > th {
+    background-color: white;
+}
+
+.hidden_form {
+    display: none;
 }
 
 @keyframes notice {

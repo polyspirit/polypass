@@ -13,7 +13,7 @@ class Notifier {
         
         setTimeout(() => {
             notice.remove();
-        }, 4000);
+        }, 2000);
     }
 }
 

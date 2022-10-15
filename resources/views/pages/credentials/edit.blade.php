@@ -3,20 +3,25 @@
 @section('content')
     @can('update', $credential)
         @if ($credential->remote)
-            @include('pages.credentials.parts.forms.remote', ['method' => 'PATCH', 'credential' => $credential])
+            @include('pages.credentials.parts.forms.remote', [
+                'method' => 'PATCH',
+                'credential' => $credential,
+            ])
         @else
-            @include('pages.credentials.parts.forms.base', ['method' => 'PATCH', 'credential' => $credential])
+            @include('pages.credentials.parts.forms.base', [
+                'method' => 'PATCH',
+                'credential' => $credential,
+            ])
         @endif
     @else
         <h3>{{ __('credentials.error-update') }}</h3>
     @endcan
 
     @can('delete', $credential)
-        <form action="/credentials/{{ $credential->id }}" method="POST" class="mt-3">
+        <form action="/credentials/{{ $credential->id }}" method="POST" class="hidden-form mt-3"
+            id="credential-{{ $credential->id }}-delete">
             @csrf
             @method('DELETE')
-
-            <button type="submit" class="btn btn-danger">{{ __('global.delete') }}</button>
         </form>
     @endcan
 @endsection

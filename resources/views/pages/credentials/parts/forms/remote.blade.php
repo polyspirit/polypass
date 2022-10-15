@@ -4,6 +4,12 @@
         @method($method)
     @endif
 
+    <div class="mb-3">
+        @include('pages.credentials.parts.buttons', [
+            'disabled' => $disabled ?? null,
+            'credential' => $credential ?? null,
+        ])
+    </div>
     <div class="container-fluid g-0">
         <div class="row mb-3">
             <div class="col-6">
@@ -91,7 +97,7 @@
                 ])
             </div>
         </div>
-        
+
         <div class="row mb-3">
             <div class="col">
                 @include('parts.fields.textarea', [
@@ -112,11 +118,4 @@
         </div>
     </div>
     <input type="hidden" name="remote" value="1">
-    @if (empty($disabled))
-        <button type="submit" class="btn btn-primary">
-            {{ isset($credential) ? __('global.update') : __('global.submit') }}
-        </button>
-    @else
-        <a href="/credentials/{{ $credential->id }}/edit" class="btn btn-primary">{{ __('global.edit') }}</a>
-    @endif
 </form>

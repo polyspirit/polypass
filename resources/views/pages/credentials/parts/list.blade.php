@@ -86,18 +86,20 @@
                             </a>
                         </td>
                     @endif
-                    <td class="d-flex align-items-stretch align-items-md-center justify-content-end gap-1">
-                        <a href="/credentials/{{ $credential->id }}/edit" class="btn btn-primary"
-                            title="{{ __('global.edit') }}">
-                            <i class="fa-regular fa-pen-to-square"></i>
-                        </a>
-                        <form action="/credentials/{{ $credential->id }}" method="POST" class="d-flex">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger" title="{{ __('global.delete') }}">
-                                <i class="fa-regular fa-trash-can"></i>
-                            </button>
-                        </form>
+                    <td>
+                        <div class="d-flex align-items-stretch align-items-md-center justify-content-end gap-1">
+                            <a href="/credentials/{{ $credential->id }}/edit" class="btn btn-primary"
+                                title="{{ __('global.edit') }}">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                            <form action="/credentials/{{ $credential->id }}" method="POST" class="d-flex">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger" title="{{ __('global.delete') }}">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             @endforeach
