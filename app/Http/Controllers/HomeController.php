@@ -26,13 +26,13 @@ class HomeController extends Controller
     public function index()
     {
         $groupRoot = Group::where('name', 'root')->first();
-        $credentials = Credential::where(['group_id' => $groupRoot->id])->get();
+        $credentials = Credential::where(['group_id' => $groupRoot->id])->orderBy('name', 'asc')->get();
         $this->checkItemsPolicy($credentials);
 
         $groups = Group::where('name', '!=', 'root')->get();
         $this->checkItemsPolicy($groups);
 
-        $favorites = Credential::where('favorite', true)->get();
+        $favorites = Credential::where('favorite', true)->orderBy('name', 'asc')->get();
         $this->checkItemsPolicy($favorites);
 
         return view('home', [

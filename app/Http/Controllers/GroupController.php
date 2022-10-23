@@ -18,7 +18,7 @@ class GroupController extends Controller
     // API
     public function index(): \Illuminate\Contracts\View\View
     {
-        $groups = Group::where('name', '!=', 'root')->get();
+        $groups = Group::where('name', '!=', 'root')->orderBy('name', 'asc')->get();
         $this->checkItemsPolicy($groups);
 
         return view(

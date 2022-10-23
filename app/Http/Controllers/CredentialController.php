@@ -23,7 +23,7 @@ class CredentialController extends Controller
     public function index(): \Illuminate\Contracts\View\View
     {
         $groupRoot = Group::where('name', 'root')->first();
-        $credentials = Credential::where(['group_id' => $groupRoot->id])->get();
+        $credentials = Credential::where(['group_id' => $groupRoot->id])->orderBy('name', 'asc')->get();
         $this->checkItemsPolicy($credentials);
 
         $groups = Group::where('name', '!=', 'root')->get();
