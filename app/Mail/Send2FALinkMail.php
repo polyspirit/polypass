@@ -15,12 +15,12 @@ class Send2FALinkMail extends Mailable
     use Queueable, SerializesModels;
 
     public $subject;
-    private string $token;
+    private string $code;
 
-    public function __construct(string $subject, string $token)
+    public function __construct(string $subject, string $code)
     {
         $this->subject = $subject;
-        $this->token = $token;
+        $this->code = $code;
     }
 
     public function envelope(): Envelope
@@ -39,7 +39,7 @@ class Send2FALinkMail extends Mailable
         return new Content(
             view: 'email.2fa',
             with: [
-                'token' => $this->token
+                'token' => $this->code
             ]
         );
     }
@@ -57,6 +57,7 @@ class Send2FALinkMail extends Mailable
     public function build()
     {
         return $this->subject('Mail from ' . env('APP_NAME'))
-                    ->view('email.2fa');
+            ->view('email.2fa')
+            ->with('code', $this->code);
     }
 }
