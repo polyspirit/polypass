@@ -57,6 +57,6 @@ class Send2FALinkMail extends Mailable
     public function build()
     {
         return $this->subject('Mail from ' . env('APP_NAME'))
-                    ->view('emails.2fa');
+                    ->view('email.2fa');
     }
 }
