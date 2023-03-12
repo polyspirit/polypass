@@ -7859,16 +7859,16 @@
         },
         {
             "name": "spatie/backtrace",
-            "version": "1.3.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/backtrace.git",
-                "reference": "6d0ff6485800ba649f06c788f1fbd1fb61fbc3ec"
+                "reference": "ec4dd16476b802dbdc6b4467f84032837e316b8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/backtrace/zipball/6d0ff6485800ba649f06c788f1fbd1fb61fbc3ec",
-                "reference": "6d0ff6485800ba649f06c788f1fbd1fb61fbc3ec",
+                "url": "https://api.github.com/repos/spatie/backtrace/zipball/ec4dd16476b802dbdc6b4467f84032837e316b8c",
+                "reference": "ec4dd16476b802dbdc6b4467f84032837e316b8c",
                 "shasum": ""
             },
             "require": {
@@ -7905,7 +7905,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/backtrace/tree/1.3.0"
+                "source": "https://github.com/spatie/backtrace/tree/1.4.0"
             },
             "funding": [
                 {
@@ -7917,7 +7917,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2023-03-04T08:31:24+00:00"
+            "time": "2023-03-04T08:57:24+00:00"
         },
         {
             "name": "spatie/flare-client-php",

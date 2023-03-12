@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\TwoFactorAuthentication;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
@@ -19,16 +21,19 @@ use App\Http\Controllers\GroupController;
 */
 Auth::routes();
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('2fa');
+Route::get('/2fa/{code}', [TwoFactorAuthentication::class, 'check'])->name('2fa_check');
 
-Route::group(['middleware' => ['auth']], function () {
-
+Route::group(['middleware' => ['auth', '2fa']], function () {
     Route::view('/generator', 'pages.generator', ['title' => __('generator.password-generator')]);
-    
+
     Route::resources([
         'users' => UserController::class,
         'groups' => GroupController::class,
         'credentials' => CredentialController::class
     ]);
-    
+});
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/2fa', [TwoFactorAuthentication::class, 'index'])->name('2fa');
 });
