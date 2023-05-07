@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ee7778075bd1db0f62f2519a2d24d562",
+    "content-hash": "098d1b77f7e8887addc3eb83eb359b94",
     "packages": [
         {
             "name": "brick/math",
@@ -5722,6 +5722,66 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/2.2.6"
             },
             "time": "2023-01-03T09:29:04+00:00"
+        },
+        {
+            "name": "vcian/laravel-ip-gateway",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vcian/laravel-ip-gateway.git",
+                "reference": "4f023ae023111c5aa421300f8a715687abe04f7e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vcian/laravel-ip-gateway/zipball/4f023ae023111c5aa421300f8a715687abe04f7e",
+                "reference": "4f023ae023111c5aa421300f8a715687abe04f7e",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Vcian\\LaravelIpGateway\\IpGatewayProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Vcian\\LaravelIpGateway\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Vcian - Viitorcloud",
+                    "email": "administrator@viitorcloud.com",
+                    "role": "Creator"
+                }
+            ],
+            "description": "Blacklist or Whitelist IP for routes",
+            "keywords": [
+                "Authentication",
+                "IP",
+                "access",
+                "blacklist",
+                "denied",
+                "firewall",
+                "gateway",
+                "laravel",
+                "prevent",
+                "whitelist"
+            ],
+            "support": {
+                "issues": "https://github.com/vcian/laravel-ip-gateway/issues",
+                "source": "https://github.com/vcian/laravel-ip-gateway/tree/v2.0.0"
+            },
+            "time": "2023-04-12T06:13:07+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

@@ -19,12 +19,15 @@ use App\Http\Controllers\GroupController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Auth::routes();
 
-Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('2fa');
-Route::get('/2fa/{code}', [TwoFactorAuthentication::class, 'check'])->name('2fa_check');
+Route::group(['middleware' => ['configs.set']], function () {
+    Auth::routes();
 
-Route::group(['middleware' => ['auth', '2fa']], function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('2fa');
+    Route::get('/2fa/{code}', [TwoFactorAuthentication::class, 'check'])->name('2fa_check');
+});
+
+Route::group(['middleware' => ['configs.set', 'auth', '2fa']], function () {
     Route::view('/generator', 'pages.generator', ['title' => __('generator.password-generator')]);
 
     Route::resources([
@@ -34,6 +37,6 @@ Route::group(['middleware' => ['auth', '2fa']], function () {
     ]);
 });
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['configs.set', 'auth']], function () {
     Route::get('/2fa', [TwoFactorAuthentication::class, 'index'])->name('2fa');
 });
