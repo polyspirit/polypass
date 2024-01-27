@@ -25,7 +25,7 @@ class PasswordGeneratorForm {
 
     changeSize() {
 
-        this.size = this.sizeRange.value;
+        this.size = parseInt(this.sizeRange.value);
         this.sizeBadge.innerText = this.size;
     }
 

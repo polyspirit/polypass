@@ -22,7 +22,7 @@
     </div>
     <div class="row text-start">
         <div class="col">
-            <h4>{{ __('generator.symbols-amount') }}: <span class="badge bg-primary js-generator-size-badge">8</span></h4>
+            <h4>{{ __('generator.symbols-amount') }}: <span class="badge bg-primary js-generator-size-badge">12</span></h4>
             <input type="range" class="form-range js-generator-size" min="4" max="64" value="12">
         </div>
         <div class="col">

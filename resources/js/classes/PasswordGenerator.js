@@ -32,7 +32,7 @@ class PasswordGenerator {
 
         let password = '';
 
-        for (let i = 0; i <= this.length; i++) {
+        for (let i = 0; i <= (this.length - 1); i++) {
             let randomNumber = Math.floor(Math.random() * this.chars.length);
             password += this.chars.substring(randomNumber, randomNumber + 1);
         }
