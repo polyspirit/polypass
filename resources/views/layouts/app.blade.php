@@ -26,10 +26,10 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 
-<body>
+<body data-bs-theme="{{ request()->cookie('theme') }}">
     <div id="app">
         <div class="notices js-notices"></div>
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}" title="{{ __('global.dashboard') }}">
                     <img src="/images/logo.png" alt="{{ config('app.name', 'Polypass') }}">
@@ -49,6 +49,24 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ __('global.theme') }}
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('theme', ['theme' => 'light']) }}">
+                                    <i class="fa-solid fa-sun w-15" aria-hidden="true"></i>
+                                    {{ __('global.theme-light') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('theme', ['theme' => 'dark']) }}">
+                                    <i class="fa-solid fa-moon w-15" aria-hidden="true"></i>
+                                    {{ __('global.theme-dark') }}
+                                </a>
+                            </div>
+                        </li>
+
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -65,11 +83,13 @@
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ '/users/' . auth()->user()->id }}">
+                                        <i class="fa-solid fa-user w-15"></i>
                                         {{ __('users.profile') }}
                                     </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
+                                        <i class="fa-solid fa-right-from-bracket w-15"></i>
                                         {{ __('signin.logout') }}
                                     </a>
 

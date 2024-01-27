@@ -25,6 +25,7 @@ Route::group(['middleware' => ['configs.set']], function () {
 
     Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('2fa');
     Route::get('/2fa/{code}', [TwoFactorAuthentication::class, 'check'])->name('2fa_check');
+    Route::get('/theme/{theme}', [HomeController::class, 'theme'])->name('theme');
 });
 
 Route::group(['middleware' => ['configs.set', 'auth', '2fa']], function () {

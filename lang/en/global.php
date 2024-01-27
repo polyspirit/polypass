@@ -15,5 +15,8 @@ return [
     'to_main' => 'To main page',
     'include' => 'Include',
     'view' => 'View',
-    'link' => 'Link'
+    'link' => 'Link',
+    'theme' => 'Theme',
+    'theme-light' => 'Light',
+    'theme-dark' => 'Dark'
 ];

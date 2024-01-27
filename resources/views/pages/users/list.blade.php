@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="table-responsive">
-    <table class="table table-light">
+    <table class="table table-striped table-hover">
         <thead>
             <tr>
                 <th scope="col" width="50">id</th>

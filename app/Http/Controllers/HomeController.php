@@ -42,4 +42,9 @@ class HomeController extends Controller
             'favorites' => $favorites
         ]);
     }
+
+    public function theme(string $theme)
+    {
+        return back()->withCookie(cookie()->forever('theme', $theme));
+    }
 }
