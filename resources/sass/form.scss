@@ -1,10 +1,10 @@
-.password-wrapper {
+.control-wrapper {
     position: relative;
 }
-.password-wrapper > .form-control {
+.control-wrapper > .form-control {
     padding-right: 1.8rem;
 }
-.password-wrapper > .password-icons {
+.control-wrapper > .control-icons {
     position: absolute;
     display: flex;
     align-items: center;
@@ -15,6 +15,11 @@
     height: 1.2rem;
     cursor: pointer;
 
+    &_top {
+        top: 4%;
+        margin-top: 0;
+    }
+
     i {
         margin-left: 0.5rem;
         font-size: 1rem;
@@ -24,10 +29,6 @@
 .table .btn {
     display: flex;
     align-items: center;
-}
-
-.form-control[disabled], .form-select[disabled] {
-    cursor: pointer;
 }
 
 .form-notice {

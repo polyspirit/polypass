@@ -11977,15 +11977,15 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-.password-wrapper {
+.control-wrapper {
   position: relative;
 }
 
-.password-wrapper > .form-control {
+.control-wrapper > .form-control {
   padding-right: 1.8rem;
 }
 
-.password-wrapper > .password-icons {
+.control-wrapper > .control-icons {
   position: absolute;
   display: flex;
   align-items: center;
@@ -11996,7 +11996,11 @@ textarea.form-control-lg {
   height: 1.2rem;
   cursor: pointer;
 }
-.password-wrapper > .password-icons i {
+.control-wrapper > .control-icons_top {
+  top: 4%;
+  margin-top: 0;
+}
+.control-wrapper > .control-icons i {
   margin-left: 0.5rem;
   font-size: 1rem;
 }
@@ -12004,10 +12008,6 @@ textarea.form-control-lg {
 .table .btn {
   display: flex;
   align-items: center;
-}
-
-.form-control[disabled], .form-select[disabled] {
-  cursor: pointer;
 }
 
 .form-notice {
@@ -12071,7 +12071,8 @@ textarea.form-control-lg {
   margin-bottom: 0;
 }
 
-.table-responsive tr > td, .table-responsive tr > th {
+.table-responsive tr > td,
+.table-responsive tr > th {
   transition: all 0.4s linear;
 }
 

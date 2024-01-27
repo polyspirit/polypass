@@ -8,7 +8,7 @@ for (const elem of formControlsElems) {
     formControls[elem.name] = new FormControl(elem);
 }
 
-// passwords 
+// passwords
 const elemsPasswords = document.querySelectorAll('.password-wrapper');
 for (const elemPassword of elemsPasswords) {
     new Password(elemPassword);

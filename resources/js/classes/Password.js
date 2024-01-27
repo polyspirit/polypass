@@ -7,7 +7,7 @@ class Password {
         this.showed = false;
 
         this.elemInput = elemPassword.querySelector('.form-control');
-        this.elemIcons = elemPassword.querySelector('.password-icons');
+        this.elemIcons = elemPassword.querySelector('.control-icons');
         this.elemEyeIcon = this.elemIcons.querySelector('.password-eye-icon');
         this.elemGenIcon = this.elemIcons.querySelector('.password-gen-icon');
 

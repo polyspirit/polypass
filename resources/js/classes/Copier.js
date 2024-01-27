@@ -18,7 +18,12 @@ class Copier {
     }
 
     static copy(text) {
-        navigator.clipboard.writeText(text);
+        try {
+            navigator.clipboard.writeText(text);
+        } catch (error) {
+            // nothing
+        }
+
         Notifier.showNotice((document.documentElement.lang === 'ru') ? 'Скопировано' : 'Copied');
     }
 }

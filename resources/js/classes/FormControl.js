@@ -7,15 +7,13 @@ class FormControl {
         this.control = control;
         this.wrapper = control.closest('.form-control-wrapper');
         this.label = this.wrapper.querySelector('.form-label');
+        this.elemCopyIcon = this.wrapper.querySelector('.copy-icon');
 
-        if (control.disabled) {
-            control.parentNode.onclick = e => {
-                if (e.target == control) {
-                    this.copyValue();
-                }
-            }
+        if (this.elemCopyIcon) {
+            this.elemCopyIcon.addEventListener('click', e => {
+                this.copyValue();
+            });
         }
-        
     }
 
     copyValue() {
@@ -29,7 +27,7 @@ class FormControl {
         notice.innerText = this.label.dataset.copied;
 
         this.label.appendChild(notice);
-        
+
         setTimeout(() => {
             notice.remove();
         }, 2000);

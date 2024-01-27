@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table class="table table-striped table-hover">
+    <table class="table table-striped table-hover align-middle">
         <thead>
             <tr>
                 <th scope="col" width="50">{{ __('global.type') }}</th>
