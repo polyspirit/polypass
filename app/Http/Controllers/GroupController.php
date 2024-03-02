@@ -1,9 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
-use App\Models\Group;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\View;
+
+use App\Models\Group;
 
 class GroupController extends Controller
 {
@@ -16,13 +21,20 @@ class GroupController extends Controller
 
 
     // API
-    public function index(): \Illuminate\Contracts\View\View
+    public function index(Request $request): View
     {
-        $groups = Group::where('name', '!=', 'root')->orderBy('name', 'asc')->get();
+        $groupsBuilder = Group::where('name', '!=', 'root');
+
+        if ($request->has('type')) {
+            $groupsBuilder->where('type', $request->type)->orderBy('type', 'asc');
+        }
+
+        $groups = $groupsBuilder->orderBy('name', 'asc')->get();
+
         $this->checkItemsPolicy($groups);
 
         return view(
-            'pages.groups.list', 
+            'pages.groups.list',
             [
                 'groups' => $groups,
                 'title' => __('entities.groups')
@@ -30,10 +42,10 @@ class GroupController extends Controller
         );
     }
 
-    public function create(): \Illuminate\Contracts\View\View
+    public function create(): View
     {
         return view(
-            'pages.groups.create', 
+            'pages.groups.create',
             [
                 'breadcrumbs' => $this->getBreadcrumbs(),
                 'title' => __('groups.create')
@@ -41,34 +53,33 @@ class GroupController extends Controller
         );
     }
 
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $request->merge(['user_id' => auth()->user()->id]);
 
-        $validationRules = [
-            'name' => ['required', 'string', 'max:127', 'min:1']
-        ];
-
-        $request->validate($validationRules);
+        $request->validate([
+            'name' => ['required', 'string', 'max:127', 'min:1'],
+            'type' => ['required', 'string', 'max:127', 'min:1']
+        ]);
 
         Group::create($request->all());
 
         return redirect()->route('groups.index');
     }
 
-    public function show(Group $group): \Illuminate\Contracts\View\View
+    public function show(Group $group): View
     {
         return view(
-            'pages.groups.detail', 
+            'pages.groups.detail',
             [
-                'group' => $group, 
+                'group' => $group,
                 'breadcrumbs' => $this->getBreadcrumbs(),
                 'title' => $group->name
             ]
         );
     }
 
-    public function edit(Group $group): \Illuminate\Contracts\View\View
+    public function edit(Group $group): View
     {
         return view(
             'pages.groups.edit',
@@ -80,10 +91,11 @@ class GroupController extends Controller
         );
     }
 
-    public function update(Request $request, Group $group): \Illuminate\Http\RedirectResponse
+    public function update(Request $request, Group $group): RedirectResponse
     {
         $validationRules = [
-            'name' => ['string', 'max:127', 'min:1']
+            'name' => ['string', 'max:127', 'min:1'],
+            'type' => ['string', 'max:127', 'min:1']
         ];
 
         $request->validate($validationRules);
@@ -93,11 +105,16 @@ class GroupController extends Controller
         return redirect()->route('groups.edit', ['group' => $group])->with('status', __('groups.message-updated'));
     }
 
-    public function destroy(Group $group): \Illuminate\Http\RedirectResponse
+    public function destroy(Group $group): RedirectResponse
     {
         if ($group->credentials) {
             $group->credentials()->delete();
         }
+
+        if ($group->notes) {
+            $group->notes()->delete();
+        }
+
         $group->delete();
 
         return redirect()->route('groups.index');
@@ -105,7 +122,7 @@ class GroupController extends Controller
 
 
     // OTHER
-    
+
     private function getBreadcrumbs(): array
     {
         return ['/groups/' => __('entities.groups')];

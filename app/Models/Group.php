@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Credential;
+use App\Models\Note;
 
 class Group extends Model
 {
     protected $guarded = ['id'];
     public $timestamps = false;
-    
+
 
     // RELATIONS
 
@@ -22,6 +23,11 @@ class Group extends Model
     public function credentials()
     {
         return $this->hasMany(Credential::class);
+    }
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
     }
 
     // OTHER

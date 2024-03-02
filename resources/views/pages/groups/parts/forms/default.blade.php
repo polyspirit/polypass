@@ -33,7 +33,15 @@
         @include('parts.fields.text', [
             'name' => 'name',
             'title' => __('groups.name'),
-            'value' => isset($group) ? $group->name : '',
+            'value' => $group?->name ?? '',
+        ])
+    </div>
+    <div class="mb-3">
+        @include('parts.fields.select', [
+            'name' => 'type',
+            'title' => __('groups.type'),
+            'options' => \App\Enums\GroupTypeEnum::options('groups.for_'),
+            'value' => $group?->type ?? \App\Enums\GroupTypeEnum::default()->value,
         ])
     </div>
 </form>
