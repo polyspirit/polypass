@@ -17,3 +17,5 @@ yarn-error.log
 
 robots.txt
 .htaccess
+composer.lock
+package-lock.json
