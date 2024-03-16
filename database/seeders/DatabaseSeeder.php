@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
 
 use App\Models\Group;
+use App\Models\User;
 use App\Enums\GroupTypeEnum;
 
 class DatabaseSeeder extends Seeder
@@ -18,7 +19,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         Artisan::call('roles:make');
-        Artisan::call('user:create admin admin@example.com qwe123 superadmin');
+
+        if (!User::all()->count()) {
+            Artisan::call('user:create admin admin@example.com qwe123 superadmin');
+        }
 
         $rootGroup = Group::where('type', GroupTypeEnum::Root->value)
             ->orWhere('name', GroupTypeEnum::Root->value)
