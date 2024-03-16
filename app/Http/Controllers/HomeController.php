@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Models\Credential;
 use App\Models\Group;
+
+use App\Enums\GroupTypeEnum;
 
 class HomeController extends Controller
 {
@@ -25,11 +28,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $groupRoot = Group::where('name', 'root')->first();
+        $groupRoot = Group::where('type', GroupTypeEnum::Root->value)->first();
         $credentials = Credential::where(['group_id' => $groupRoot->id])->orderBy('name', 'asc')->get();
         $this->checkItemsPolicy($credentials);
 
-        $groups = Group::where('name', '!=', 'root')->get();
+        $groups = Group::where('type',  GroupTypeEnum::Credential->value)->get();
         $this->checkItemsPolicy($groups);
 
         $favorites = Credential::where('favorite', true)->orderBy('name', 'asc')->get();

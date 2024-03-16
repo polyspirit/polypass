@@ -10,13 +10,17 @@ return [
             'groups-create',
             'groups-modify-any',
             'credentials-create',
-            'credentials-modify-any'
+            'credentials-modify-any',
+            'notes-create',
+            'notes-modify-any'
         ],
         'user' => [
             'groups-create',
             'groups-modify',
             'credentials-create',
-            'credentials-modify'
+            'credentials-modify',
+            'notes-create',
+            'notes-modify'
         ]
     ]
 

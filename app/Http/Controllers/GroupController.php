@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\View;
 
 use App\Models\Group;
+use App\Enums\GroupTypeEnum;
 
 class GroupController extends Controller
 {
@@ -23,7 +24,7 @@ class GroupController extends Controller
     // API
     public function index(Request $request): View
     {
-        $groupsBuilder = Group::where('name', '!=', 'root');
+        $groupsBuilder = Group::where('type', '!=', GroupTypeEnum::Root->value);
 
         if ($request->has('type')) {
             $groupsBuilder->where('type', $request->type)->orderBy('type', 'asc');

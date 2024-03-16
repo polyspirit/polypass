@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
+
+use App\Enums\GroupTypeEnum;
+
 use App\Models\Group;
 use App\Models\Credential;
 use App\Models\Remote;
-use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\Crypt;
 
 class CredentialController extends Controller
 {
@@ -22,11 +24,11 @@ class CredentialController extends Controller
     // API
     public function index(): \Illuminate\Contracts\View\View
     {
-        $groupRoot = Group::where('name', 'root')->first();
+        $groupRoot = Group::where('type', GroupTypeEnum::Root->value)->first();
         $credentials = Credential::where(['group_id' => $groupRoot->id])->orderBy('name', 'asc')->get();
         $this->checkItemsPolicy($credentials);
 
-        $groups = Group::where('name', '!=', 'root')->get();
+        $groups = Group::where('type', GroupTypeEnum::Credential->value)->get();
         $this->checkItemsPolicy($groups);
 
         return view(
@@ -64,7 +66,7 @@ class CredentialController extends Controller
     {
         $request->merge(['user_id' => auth()->user()->id]);
         $request->merge(['favorite' => $request->has('favorite')]);
-        
+
         $validationRules = [
             'group_id' => ['integer'],
             'name' => ['required', 'string', 'max:127', 'min:1'],
@@ -84,7 +86,7 @@ class CredentialController extends Controller
         $request->validate($validationRules);
 
         if (!$request->has('group_id')) {
-            $groupRoot = Group::where('name', 'root')->first();
+            $groupRoot = Group::where('type', GroupTypeEnum::Root->value)->first();
             $request->merge(['group_id' => $groupRoot->id]);
         }
 
@@ -190,8 +192,12 @@ class CredentialController extends Controller
 
     private function getGroupsOptions(): array
     {
+        $groups = Group::where('type', GroupTypeEnum::Credential->value)
+            ->orWhere('type', GroupTypeEnum::Root->value)
+            ->get();
+
         $groupsOptions = [];
-        foreach (Group::all() as $group) {
+        foreach ($groups as $group) {
             $groupsOptions[$group->id] = $group->name;
         }
 

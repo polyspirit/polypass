@@ -6,6 +6,9 @@
         <a class="nav-link" href="/credentials">{{ __('entities.credentials') }}</a>
     </li>
     <li class="nav-item">
+        <a class="nav-link" href="/notes">{{ __('entities.notes') }}</a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link" href="/generator">{{ __('generator.password-generator') }}</a>
     </li>
 </ul>

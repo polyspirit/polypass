@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CredentialController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\GroupController;
 
 /*
@@ -34,7 +35,8 @@ Route::group(['middleware' => ['configs.set', 'auth', '2fa']], function () {
     Route::resources([
         'users' => UserController::class,
         'groups' => GroupController::class,
-        'credentials' => CredentialController::class
+        'credentials' => CredentialController::class,
+        'notes' => NoteController::class
     ]);
 });
 

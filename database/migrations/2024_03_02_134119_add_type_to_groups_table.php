@@ -5,6 +5,9 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 use App\Enums\GroupTypeEnum;
+use App\Models\Group;
+
+use Database\Seeders\DatabaseSeeder;
 
 return new class extends Migration
 {
@@ -15,6 +18,8 @@ return new class extends Migration
                 $table->string('type', 15)->default(GroupTypeEnum::default())->after('name')->index();
             });
         }
+
+        resolve(DatabaseSeeder::class)->run();
     }
 
     public function down(): void

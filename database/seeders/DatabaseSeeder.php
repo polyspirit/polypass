@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
 use Illuminate\Support\Facades\Artisan;
+
 use App\Models\Group;
+use App\Enums\GroupTypeEnum;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,8 +20,17 @@ class DatabaseSeeder extends Seeder
         Artisan::call('roles:make');
         Artisan::call('user:create admin admin@example.com qwe123 superadmin');
 
-        $group = new Group;
-        $group->name = 'root';
-        $group->save();
+        $rootGroup = Group::where('type', GroupTypeEnum::Root->value)
+            ->orWhere('name', GroupTypeEnum::Root->value)
+            ->orWhere('name', __('groups.' . GroupTypeEnum::Root->value))
+            ->first();
+
+        if (is_null($rootGroup)) {
+            $rootGroup = new Group;
+        }
+
+        $rootGroup->name = __('groups.' . GroupTypeEnum::Root->value);
+        $rootGroup->type = GroupTypeEnum::Root->value;
+        $rootGroup->save();
     }
 }

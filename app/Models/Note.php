@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Crypt;
 
 use App\Models\User;
 use App\Models\Group;
@@ -22,5 +23,17 @@ class Note extends Model
     public function group()
     {
         return $this->belongsTo(Group::class);
+    }
+
+
+    // OTHER
+
+    public function decrypt()
+    {
+        try {
+            $this->note = Crypt::decryptString($this->note);
+        } catch (\Throwable $th) {
+            // nothing, just try
+        }
     }
 }

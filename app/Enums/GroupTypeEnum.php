@@ -8,6 +8,7 @@ enum GroupTypeEnum: string implements EnumInterface
 {
     use EnumTrait;
 
+    case Root = 'root';
     case Credential = 'credential';
     case Note = 'note';
 

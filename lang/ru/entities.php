@@ -6,5 +6,7 @@ return [
     'credentials' => 'Доступы',
     'credential' => 'Доступ',
     'groups' => 'Группы',
-    'group' => 'Группа'
+    'group' => 'Группа',
+    'notes' => 'Заметки',
+    'note' => 'Заметка'
 ];
