@@ -6,7 +6,7 @@
 
     @include('pages.notes.parts.buttons', [
         'disabled' => $disabled ?? null,
-        'note' => $note ?? null
+        'note' => $note ?? null,
     ])
 
     <div class="mb-3">
@@ -28,11 +28,15 @@
         ])
     </div>
     <div class="mb-3">
-        @include('parts.fields.textarea', [
-            'name' => 'note',
-            'title' => __('notes.note'),
-            'value' => isset($note) ? $note->note : '',
-        ])
+        <div class="d-none">
+            @include('parts.fields.textarea', [
+                'name' => 'note',
+                'title' => __('notes.note'),
+                'value' => isset($note) ? $note->note : '',
+            ])
+        </div>
+        <div class="mb-2">{{ __('notes.note') }}</div>
+        <div id="note-editor" data-readonly="{{ empty($disabled) ? 0 : 1 }}">{!! isset($note) ? $note->note : '' !!}</div>
     </div>
     <div class="mb-3">
         @include('parts.fields.checkbox', [
