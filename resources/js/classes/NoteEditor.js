@@ -15,6 +15,8 @@ class NoteEditor {
             theme: 'snow'
         });
 
+        quill.setContents(JSON.parse(this.textarea.value));
+
         quill.on('text-change', (delta, oldDelta, source) => {
             if (source === 'user') {
                 this.textarea.value = JSON.stringify(quill.getContents());
