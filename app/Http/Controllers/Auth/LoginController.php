@@ -21,7 +21,6 @@ class LoginController extends Controller
     | to conveniently provide its functionality to your applications.
     |
     */
-
     use AuthenticatesUsers;
 
     /**
@@ -29,7 +28,17 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/2fa';
+    protected $redirectTo = '/';
+
+    /**
+     * Get the redirect path after login.
+     *
+     * @return string
+     */
+    protected function redirectPath()
+    {
+        return config('app.2fa_enabled', true) ? '/2fa' : '/';
+    }
 
     /**
      * Create a new controller instance.
@@ -56,7 +65,7 @@ class LoginController extends Controller
         if ($isIpBlocked) {
             return abort(404);
         } else {
-            $remoteAccess = new RemoteAccess;
+            $remoteAccess = new RemoteAccess();
             $remoteAccess->ip = $request->ip();
             $remoteAccess->path = $request->path();
             $remoteAccess->save();
@@ -67,8 +76,10 @@ class LoginController extends Controller
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
         // the IP address of the client making these requests into this application.
-        if (method_exists($this, 'hasTooManyLoginAttempts') &&
-            $this->hasTooManyLoginAttempts($request)) {
+        if (
+            method_exists($this, 'hasTooManyLoginAttempts') &&
+            $this->hasTooManyLoginAttempts($request)
+        ) {
             $this->fireLockoutEvent($request);
 
             if (!$isIpBlocked) {

@@ -36,8 +36,8 @@ class NoteEditor {
 
             [{ 'header': 1 }, { 'header': 2 }],               // custom button values
             [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
-            [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-            [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+            [{ 'script': 'sub' }, { 'script': 'super' }],     // superscript/subscript
+            [{ 'indent': '-1' }, { 'indent': '+1' }],         // outdent/indent
             [{ 'direction': 'rtl' }],                         // text direction
 
             [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdow

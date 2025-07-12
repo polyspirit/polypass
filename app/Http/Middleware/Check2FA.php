@@ -16,6 +16,10 @@ class Check2FA
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // Skip 2FA check if disabled in configuration
+        if (!config('app.2fa_enabled', true)) {
+            return $next($request);
+        }
 
         if (empty($request->cookie('user_2fa'))) {
             return redirect()->route('2fa');

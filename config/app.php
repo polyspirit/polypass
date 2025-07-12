@@ -236,4 +236,16 @@ return [
 
     'demo' => env('APP_DEMO', false),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Two-Factor Authentication Configuration
+    |--------------------------------------------------------------------------
+    |
+    | This option controls whether two-factor authentication is enabled.
+    | Set to false to disable 2FA in local environment.
+    |
+    */
+
+    '2fa_enabled' => env('2FA_ENABLED', true),
+
 ];

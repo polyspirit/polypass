@@ -9,13 +9,17 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\Send2FALinkMail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
-
 use App\Models\User;
 
 class TwoFactorAuthentication extends Controller
 {
     public function index(Request $request)
     {
+        // Skip 2FA if disabled in configuration
+        if (!config('app.2fa_enabled', true)) {
+            return redirect('/');
+        }
+
         try {
             /** @var User $user */
             $user = auth()->user();

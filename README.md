@@ -1,12 +1,19 @@
 # Polypass
-This is laravel 9.11 based credentials keeper. You can install it and keep your credentials, passwords and remote data.
 
-## Alpha version warning!
-The project is still in development. 
+Credentials keeper.
 
-**Be careful**, you assume all responsibility for data storage!
+## Two-Factor Authentication Configuration
 
-## How to install
+To disable two-factor authentication in local environment, add the following line to your `.env` file:
+
+```
+2FA_ENABLED=false
+```
+
+By default, 2FA is enabled (`2FA_ENABLED=true`). Set it to `false` to skip 2FA verification in local development.
+
+## Installation
+
 1. Clone this package to your server:
 ```bash
 cd /path_to_project_root_folder
