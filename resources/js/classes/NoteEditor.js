@@ -15,13 +15,35 @@ class NoteEditor {
             theme: 'snow'
         });
 
-        quill.setContents(JSON.parse(this.textarea.value));
+        // Get initial content from data attribute or textarea
+        let initialContent;
+        if (this.container.dataset.initialContent) {
+            try {
+                initialContent = JSON.parse(this.container.dataset.initialContent);
+            } catch (e) {
+                initialContent = { ops: [{ insert: '\n' }] };
+            }
+        } else {
+            initialContent = this.textarea.value.trim() ? JSON.parse(this.textarea.value) : { ops: [{ insert: '\n' }] };
+        }
+        quill.setContents(initialContent);
 
         quill.on('text-change', (delta, oldDelta, source) => {
             if (source === 'user') {
-                this.textarea.value = JSON.stringify(quill.getContents());
+                const contents = quill.getContents();
+                this.textarea.value = JSON.stringify(contents);
             }
         });
+
+        // Ensure form data is updated before submission
+        const form = this.container.closest('form');
+        if (form) {
+            form.addEventListener('submit', () => {
+                const contents = quill.getContents();
+                const jsonString = JSON.stringify(contents);
+                this.textarea.value = jsonString;
+            });
+        }
     }
 
     hideTextarea() {

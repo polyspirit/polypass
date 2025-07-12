@@ -32,11 +32,11 @@
             @include('parts.fields.textarea', [
                 'name' => 'note',
                 'title' => __('notes.note'),
-                'value' => isset($note) ? $note->note : '',
+                'value' => isset($note) ? $note->note : '{"ops":[{"insert":"\n"}]}',
             ])
         </div>
         <div class="mb-2">{{ __('notes.note') }}</div>
-        <div id="note-editor" data-readonly="{{ empty($disabled) ? 0 : 1 }}">{!! isset($note) ? $note->note : '' !!}</div>
+        <div id="note-editor" data-readonly="{{ empty($disabled) ? 0 : 1 }}" data-initial-content="{{ isset($note) && $note->note ? $note->note : '{"ops":[{"insert":"\n"}]}' }}"></div>
     </div>
     <div class="mb-3">
         @include('parts.fields.checkbox', [

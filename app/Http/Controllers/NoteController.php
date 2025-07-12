@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Crypt;
-
 use App\Enums\GroupTypeEnum;
-
 use App\Models\Group;
 use App\Models\Note;
 
@@ -71,7 +69,7 @@ class NoteController extends Controller
         $validationRules = [
             'group_id' => ['integer'],
             'name' => ['required', 'string', 'max:127', 'min:1'],
-            'note' => ['string'],
+            'note' => ['nullable', 'string'],
             'favorite' => ['boolean']
         ];
 
@@ -128,7 +126,7 @@ class NoteController extends Controller
         $validationRules = [
             'group_id' => ['integer'],
             'name' => ['string', 'max:127', 'min:1'],
-            'note' => ['string'],
+            'note' => ['nullable', 'string'],
             'favorite' => ['boolean']
         ];
 
@@ -169,8 +167,18 @@ class NoteController extends Controller
 
     private function encryptData(Request &$request): Request
     {
-        if ($request->has('note')) {
-            $request->merge(['note' => Crypt::encryptString($request->note)]);
+        if ($request->has('note') && !empty($request->note)) {
+            // Validate that note is valid JSON
+            $noteData = $request->note;
+            if (is_string($noteData)) {
+                $decoded = json_decode($noteData, true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $request->merge(['note' => Crypt::encryptString($noteData)]);
+                } else {
+                    // If not valid JSON, treat as plain text
+                    $request->merge(['note' => Crypt::encryptString($noteData)]);
+                }
+            }
         }
 
         return $request;
