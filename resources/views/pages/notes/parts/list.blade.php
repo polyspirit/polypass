@@ -26,7 +26,7 @@
                             <a href="/notes/create?group_id={{ $group->id }}" class="btn btn-primary"
                                 title="{{ __('notes.create') }}">
                                 <i class="fa-solid fa-plus"></i>
-                                <i class="fa-solid fa-key"></i>
+                                <i class="fa-solid fa-sticky-note"></i>
                             </a>
                             <a href="/groups/{{ $group->id }}/edit" class="btn btn-primary"
                                 title="{{ __('global.edit') }}">
