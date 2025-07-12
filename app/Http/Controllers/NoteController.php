@@ -84,15 +84,11 @@ class NoteController extends Controller
 
         $note = Note::create($request->all());
 
-        $note->decrypt($note);
-
         return $this->show($note);
     }
 
     public function show(Note $note): View
     {
-        $note->decrypt($note);
-
         return view(
             'pages.notes.detail',
             [
@@ -106,8 +102,6 @@ class NoteController extends Controller
 
     public function edit(Note $note): View
     {
-        $note->decrypt($note);
-
         return view(
             'pages.notes.edit',
             [

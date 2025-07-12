@@ -7,7 +7,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\View;
-
 use App\Models\Group;
 use App\Enums\GroupTypeEnum;
 
@@ -70,6 +69,8 @@ class GroupController extends Controller
 
     public function show(Group $group): View
     {
+        $group->load(['credentials', 'notes']);
+
         return view(
             'pages.groups.detail',
             [
