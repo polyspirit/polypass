@@ -8,13 +8,13 @@
     "name": "quill"
   },
   "node_modules/bootstrap/dist/js/bootstrap.esm.js": {
-    "file": "assets/bootstrap.esm-CptDModf.js",
+    "file": "assets/bootstrap.esm-qEJxTHVc.js",
     "name": "bootstrap.esm",
     "src": "node_modules/bootstrap/dist/js/bootstrap.esm.js",
     "isDynamicEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-DJ0dkYJT.js",
+    "file": "assets/app-FYc7D0qq.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -25,7 +25,7 @@
     ]
   },
   "resources/js/bootstrap.js": {
-    "file": "assets/bootstrap-CjSicyJb.js",
+    "file": "assets/bootstrap-BMUre2Xl.js",
     "name": "bootstrap",
     "src": "resources/js/bootstrap.js",
     "isEntry": true,
@@ -43,11 +43,8 @@
     "isEntry": true
   },
   "resources/sass/app.scss": {
-    "file": "assets/app-CFrf75np.css",
+    "file": "assets/app-BK7KlS90.css",
     "src": "resources/sass/app.scss",
-    "isEntry": true,
-    "names": [
-      "app.css"
-    ]
+    "isEntry": true
   }
 }
