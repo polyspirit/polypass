@@ -20,7 +20,7 @@ yarn-error.log
 /.idea
 /.vscode
 /.nvmrc
-.stderr.log
+stderr.log
 
 robots.txt
 .htaccess
