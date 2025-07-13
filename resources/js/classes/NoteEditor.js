@@ -95,13 +95,13 @@ class NoteEditor {
             [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
             [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
 
-            [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-            [{ 'font': [] }],
-            [{ 'align': [] }],
+            [{ 'color': null }, { 'background': null }],      // dropdown with defaults from theme
+            [{ 'font': null }],
+            [{ 'align': null }],
 
             ['clean']                                         // remove formatting button
         ];
     }
 }
 
-module.exports = NoteEditor;
+export default NoteEditor;

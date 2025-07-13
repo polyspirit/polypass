@@ -21,4 +21,4 @@ class CredentialRemote {
     }
 }
 
-module.exports = CredentialRemote;
+export default CredentialRemote;

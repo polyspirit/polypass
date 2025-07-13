@@ -20,10 +20,13 @@
 
     <!-- Scripts -->
     <script src="https://kit.fontawesome.com/4212cb2b11.js" crossorigin="anonymous"></script>
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- Quill Editor -->
+    <link href="https://cdn.quilljs.com/2.0.3/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/2.0.3/quill.min.js"></script>
+    <!-- Highlight.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
 <body data-bs-theme="{{ request()->cookie('theme') }}">

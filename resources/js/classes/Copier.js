@@ -1,11 +1,8 @@
-const Notifier = require('./Notifier');
+import Notifier from './Notifier';
 
 class Copier {
-
     constructor() {
-
         const copyItems = document.querySelectorAll('.js-copy-text, .js-copy-data');
-
         for (const item of copyItems) {
             item.addEventListener('click', () => {
                 if (item.classList.contains('js-copy-text')) {
@@ -23,9 +20,8 @@ class Copier {
         } catch (error) {
             // nothing
         }
-
         Notifier.showNotice((document.documentElement.lang === 'ru') ? 'Скопировано' : 'Copied');
     }
 }
 
-module.exports = Copier;
+export default Copier;

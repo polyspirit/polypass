@@ -24,4 +24,4 @@ class Button {
 
 }
 
-module.exports = Button;
+export default Button;

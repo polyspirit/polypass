@@ -42,4 +42,4 @@ class PasswordGenerator {
 
 }
 
-module.exports = PasswordGenerator;
+export default PasswordGenerator;

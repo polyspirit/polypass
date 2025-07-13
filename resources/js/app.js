@@ -2,10 +2,8 @@ import './bootstrap';
 
 import './form';
 
-import Quill from 'quill';
-import 'quill/dist/quill.snow.css';
-import hljs from 'highlight.js';
-import 'highlight.js/styles/atom-one-dark.min.css';
+// Quill and highlight.js are loaded via CDN
+// They are available as global objects: window.Quill and window.hljs
 
 import Copier from './classes/Copier';
 import PasswordGeneratorForm from './classes/PasswordGeneratorForm';
@@ -17,4 +15,4 @@ new Copier();
 new PasswordGeneratorForm();
 new CredentialRemote();
 new Button();
-new NoteEditor(Quill, hljs, 'note-editor');
+new NoteEditor(window.Quill, window.hljs, 'note-editor');
