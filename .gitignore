@@ -4,9 +4,12 @@
 /public/storage
 /public/css
 /public/js
+/public/.well-known
+/public/.htaccess
 /public_html
 /storage/*.key
 /vendor
+/tmp
 .env
 .env.backup
 .phpunit.result.cache
@@ -17,6 +20,7 @@ yarn-error.log
 /.idea
 /.vscode
 /.nvmrc
+.stderr.log
 
 robots.txt
 .htaccess
