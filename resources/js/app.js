@@ -17,4 +17,4 @@ new Copier();
 new PasswordGeneratorForm();
 new CredentialRemote();
 new Button();
-new NoteEditor(Quill, hljs);
+new NoteEditor(Quill, hljs, 'note-editor');

@@ -47,11 +47,15 @@
         ])
     </div>
     <div class="mb-3">
-        @include('parts.fields.textarea', [
-            'name' => 'note',
-            'title' => __('credentials.note'),
-            'value' => isset($credential) ? $credential->note : '',
-        ])
+        <div class="d-none">
+            @include('parts.fields.textarea', [
+                'name' => 'note',
+                'title' => __('credentials.note'),
+                'value' => isset($credential) ? $credential->note : '{"ops":[{"insert":"\n"}]}',
+            ])
+        </div>
+        <div class="mb-2">{{ __('credentials.note') }}</div>
+        <div id="note-editor" data-readonly="{{ empty($disabled) ? 0 : 1 }}" data-initial-content="{{ isset($credential) && $credential->note ? (is_string($credential->note) && json_decode($credential->note) ? $credential->note : json_encode(['ops' => [['insert' => $credential->note]]])) : '{"ops":[{"insert":"\n"}]}' }}"></div>
     </div>
     <div class="mb-3">
         @include('parts.fields.checkbox', [

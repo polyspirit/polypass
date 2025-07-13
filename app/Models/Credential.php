@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
-
 use App\Models\User;
 use App\Models\Group;
 use App\Models\Remote;
@@ -46,6 +45,13 @@ class Credential extends Model
         try {
             $this->login = Crypt::decryptString($this->login);
             $this->password = Crypt::decryptString($this->password);
+            if (!empty($this->note)) {
+                try {
+                    $this->note = Crypt::decryptString($this->note);
+                } catch (\Throwable $th) {
+                    // Note field is not encrypted, keep as is
+                }
+            }
         } catch (\Throwable $th) {
             // nothing, just try
         }

@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
-
 use App\Enums\GroupTypeEnum;
-
 use App\Models\Group;
 use App\Models\Credential;
 use App\Models\Remote;
@@ -72,6 +70,7 @@ class CredentialController extends Controller
             'name' => ['required', 'string', 'max:127', 'min:1'],
             'login' => ['required', 'string', 'max:127', 'min:1'],
             'password' => ['required', 'string', 'max:127', 'min:1'],
+            'note' => ['nullable', 'string'],
             'favorite' => ['boolean']
         ];
 
@@ -143,6 +142,7 @@ class CredentialController extends Controller
             'login' => ['string', 'max:127', 'min:1'],
             'password' => ['string', 'max:127', 'min:1'],
             'url' => ['max:255'],
+            'note' => ['nullable', 'string'],
             'favorite' => ['boolean']
         ];
 
@@ -156,7 +156,7 @@ class CredentialController extends Controller
 
         $request->validate($validationRules);
 
-        if ($request->has('login') || $request->has('password')) {
+        if ($request->has('login') || $request->has('password') || $request->has('note')) {
             $this->encryptData($request);
         }
 
@@ -212,6 +212,20 @@ class CredentialController extends Controller
 
         if ($request->has('password')) {
             $request->merge(['password' => Crypt::encryptString($request->password)]);
+        }
+
+        if ($request->has('note') && !empty($request->note)) {
+            // Validate that note is valid JSON
+            $noteData = $request->note;
+            if (is_string($noteData)) {
+                $decoded = json_decode($noteData, true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $request->merge(['note' => Crypt::encryptString($noteData)]);
+                } else {
+                    // If not valid JSON, treat as plain text
+                    $request->merge(['note' => Crypt::encryptString($noteData)]);
+                }
+            }
         }
 
         return $request;
