@@ -2,8 +2,8 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "./scripts/dev.sh",
-        "build": "./scripts/build.sh",
+        "dev": "vite",
+        "build": "vite build",
         "preview": "vite preview"
     },
     "devDependencies": {
