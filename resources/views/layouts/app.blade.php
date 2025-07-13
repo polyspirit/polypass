@@ -21,11 +21,9 @@
     <!-- Scripts -->
     <script src="https://kit.fontawesome.com/4212cb2b11.js" crossorigin="anonymous"></script>
     <!-- Quill Editor -->
-    <link href="https://cdn.quilljs.com/2.0.3/quill.snow.css" rel="stylesheet">
-    <script src="https://cdn.quilljs.com/2.0.3/quill.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.min.css" rel="stylesheet">
     <!-- Highlight.js -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
@@ -179,6 +177,16 @@
             </main>
         @endauth
     </div>
+    
+    <!-- Load libraries at the end of body -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" onerror="console.error('highlight.js failed to load')"></script>
+    <script>
+        // Initialize highlight.js when loaded
+        if (window.hljs) {
+            hljs.highlightAll();
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.min.js" onerror="console.error('Quill failed to load')"></script>
 </body>
 
 </html>

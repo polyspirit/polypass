@@ -6,6 +6,7 @@
 /public/js
 /public/.well-known
 /public/.htaccess
+/public/build
 /public_html
 /storage/*.key
 /vendor

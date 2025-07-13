@@ -9,10 +9,12 @@ import Copier from './classes/Copier';
 import PasswordGeneratorForm from './classes/PasswordGeneratorForm';
 import CredentialRemote from './classes/CredentialRemote';
 import Button from './classes/Button';
-import NoteEditor from './classes/NoteEditor';
 
+// Initialize other components
 new Copier();
 new PasswordGeneratorForm();
 new CredentialRemote();
 new Button();
-new NoteEditor(window.Quill, window.hljs, 'note-editor');
+
+// Initialize NoteEditor with proper library loading checks
+import './note-editor-init';
