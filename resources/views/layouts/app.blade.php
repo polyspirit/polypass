@@ -87,6 +87,10 @@
                                         <i class="fa-solid fa-user w-15"></i>
                                         {{ __('users.profile') }}
                                     </a>
+                                    <a class="dropdown-item" href="{{ route('sessions.index') }}">
+                                        <i class="fa-solid fa-desktop w-15"></i>
+                                        {{ __('sessions.title') }}
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

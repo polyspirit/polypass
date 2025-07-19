@@ -128,7 +128,7 @@ return [
 
     'cookie' => env(
         'SESSION_COOKIE',
-        Str::slug(env('APP_NAME', 'laravel'), '_').'_session'
+        Str::slug(env('APP_NAME', 'laravel'), '_') . '_session'
     ),
 
     /*
@@ -197,5 +197,18 @@ return [
     */
 
     'same_site' => 'lax',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Multiple Sessions Per User
+    |--------------------------------------------------------------------------
+    |
+    | This option allows multiple sessions for the same user. When set to true,
+    | users can be logged in from multiple devices simultaneously without
+    | invalidating previous sessions.
+    |
+    */
+
+    'multiple_sessions' => env('SESSION_MULTIPLE', true),
 
 ];

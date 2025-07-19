@@ -3,12 +3,13 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\TwoFactorAuthentication;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CredentialController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\UserSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,12 @@ Route::group(['middleware' => ['configs.set', 'auth', '2fa']], function () {
         'credentials' => CredentialController::class,
         'notes' => NoteController::class
     ]);
+
+    // User sessions management
+    Route::get('/sessions', [UserSessionController::class, 'index'])->name('sessions.index');
+    Route::delete('/sessions/{sessionId}', [UserSessionController::class, 'terminate'])->name('sessions.terminate');
+    Route::delete('/sessions', [UserSessionController::class, 'terminateOthers'])->name('sessions.terminate-others');
+    Route::get('/sessions/stats', [UserSessionController::class, 'stats'])->name('sessions.stats');
 });
 
 Route::group(['middleware' => ['configs.set', 'auth']], function () {
