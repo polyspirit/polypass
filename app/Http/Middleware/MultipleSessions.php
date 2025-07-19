@@ -19,6 +19,11 @@ class MultipleSessions
      */
     public function handle(Request $request, Closure $next)
     {
+        // Skip for static assets and API requests
+        if ($this->shouldSkip($request)) {
+            return $next($request);
+        }
+
         // Check if multiple sessions are enabled
         if (!config('session.multiple_sessions', true)) {
             return $next($request);
@@ -58,5 +63,43 @@ class MultipleSessions
         }
 
         return $next($request);
+    }
+
+    /**
+     * Check if request should be skipped
+     *
+     * @param Request $request
+     * @return bool
+     */
+    private function shouldSkip(Request $request): bool
+    {
+        $path = $request->path();
+
+        // Skip for static assets
+        if (
+            str_starts_with($path, 'build/') ||
+            str_starts_with($path, 'images/') ||
+            str_starts_with($path, 'favicon') ||
+            str_ends_with($path, '.css') ||
+            str_ends_with($path, '.js') ||
+            str_ends_with($path, '.png') ||
+            str_ends_with($path, '.jpg') ||
+            str_ends_with($path, '.jpeg') ||
+            str_ends_with($path, '.gif') ||
+            str_ends_with($path, '.ico') ||
+            str_ends_with($path, '.woff') ||
+            str_ends_with($path, '.woff2') ||
+            str_ends_with($path, '.ttf') ||
+            str_ends_with($path, '.eot')
+        ) {
+            return true;
+        }
+
+        // Skip for API requests
+        if (str_starts_with($path, 'api/')) {
+            return true;
+        }
+
+        return false;
     }
 }

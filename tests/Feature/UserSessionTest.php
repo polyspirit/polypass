@@ -11,11 +11,26 @@ class UserSessionTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Mock 2FA cookie for testing
+     */
+    private function mock2FACookie(User $user)
+    {
+        $code = '123456';
+        $user->auth_code = $code;
+        $user->save();
+
+        $linkCode = encrypt($user->id . '|' . $code . '|' . (time() + 3600));
+
+        return $this->withCookie('user_2fa', $linkCode);
+    }
+
     public function testUserCanViewSessionsPage()
     {
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)
+            ->withCookie('user_2fa', encrypt($user->id . '|123456|' . (time() + 3600)))
             ->get('/sessions');
 
         $response->assertStatus(200);
@@ -29,11 +44,19 @@ class UserSessionTest extends TestCase
             'password' => bcrypt('password'),
         ]);
 
+        // Mock 2FA cookie
+        $code = '123456';
+        $user->auth_code = $code;
+        $user->save();
+
+        $linkCode = encrypt($user->id . '|' . $code . '|' . (time() + 3600));
+
         $response = $this->post('/login', [
             'email' => 'test@example.com',
             'password' => 'password',
         ]);
 
+        // Session should be created after successful 2FA
         $this->assertDatabaseHas('user_sessions', [
             'user_id' => $user->id,
         ]);
@@ -54,6 +77,7 @@ class UserSessionTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
+            ->withCookie('user_2fa', encrypt($user->id . '|123456|' . (time() + 3600)))
             ->delete("/sessions/{$session->session_id}");
 
         $response->assertRedirect();
@@ -68,6 +92,7 @@ class UserSessionTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)
+            ->withCookie('user_2fa', encrypt($user->id . '|123456|' . (time() + 3600)))
             ->delete('/sessions/' . session()->getId());
 
         $response->assertRedirect();
@@ -98,6 +123,7 @@ class UserSessionTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)
+            ->withCookie('user_2fa', encrypt($user->id . '|123456|' . (time() + 3600)))
             ->delete('/sessions');
 
         $response->assertRedirect();
@@ -109,6 +135,7 @@ class UserSessionTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)
+            ->withCookie('user_2fa', encrypt($user->id . '|123456|' . (time() + 3600)))
             ->get('/sessions/stats');
 
         $response->assertStatus(200);
@@ -117,5 +144,17 @@ class UserSessionTest extends TestCase
             'active_sessions',
             'current_session',
         ]);
+    }
+
+    public function testSessionIsNotCreatedWithout2FA()
+    {
+        $user = User::factory()->create();
+
+        // Try to access sessions without 2FA cookie
+        $response = $this->actingAs($user)
+            ->get('/sessions');
+
+        // Should redirect to 2FA page
+        $response->assertRedirect('/2fa');
     }
 }

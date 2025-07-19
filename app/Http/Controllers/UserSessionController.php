@@ -9,6 +9,17 @@ use App\Models\UserSession;
 class UserSessionController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('2fa');
+    }
+
+    /**
      * Display a listing of user sessions.
      */
     public function index()

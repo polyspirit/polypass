@@ -10,6 +10,8 @@ use App\Mail\Send2FALinkMail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use App\Models\User;
+use App\Models\UserSession;
+use Illuminate\Support\Facades\Session;
 
 class TwoFactorAuthentication extends Controller
 {
@@ -73,6 +75,27 @@ class TwoFactorAuthentication extends Controller
 
         if ($now > $dateExpires) {
             return view('auth.2fa.error', ['message' => __('signin.2fa_code_expired')]);
+        }
+
+        // Create session record after successful 2FA
+        if (config('session.multiple_sessions', true)) {
+            $sessionId = Session::getId();
+
+            // Find or create session record
+            $userSession = UserSession::where('session_id', $sessionId)
+                ->where('user_id', $user->id)
+                ->first();
+
+            if (!$userSession) {
+                UserSession::create([
+                    'user_id' => $user->id,
+                    'session_id' => $sessionId,
+                    'ip_address' => $request->ip(),
+                    'user_agent' => $request->userAgent(),
+                    'last_activity' => now(),
+                    'is_active' => true,
+                ]);
+            }
         }
 
         $cookie = cookie('user_2fa', $request->code, 43200); // 30 days
