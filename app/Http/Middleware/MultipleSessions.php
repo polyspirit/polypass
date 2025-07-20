@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\UserSession;
+use App\Models\User2FAToken;
 
 class MultipleSessions
 {
@@ -29,8 +30,8 @@ class MultipleSessions
             return $next($request);
         }
 
-        // If user is authenticated, track the session
-        if (Auth::check()) {
+        // If user is authenticated and has passed 2FA, track the session
+        if (Auth::check() && $this->hasPassed2FA($request)) {
             $user = Auth::user();
             $sessionId = Session::getId();
 
@@ -63,6 +64,58 @@ class MultipleSessions
         }
 
         return $next($request);
+    }
+
+    /**
+     * Check if user has passed 2FA verification
+     *
+     * @param Request $request
+     * @return bool
+     */
+    private function hasPassed2FA(Request $request): bool
+    {
+        // Skip 2FA check if disabled in configuration
+        if (!config('app.2fa_enabled', true)) {
+            return true;
+        }
+
+        // Check for new token-based 2FA
+        if ($request->hasCookie('user_2fa_token')) {
+            $token = $request->cookie('user_2fa_token');
+            $user = Auth::user();
+
+            if ($user) {
+                $tokenRecord = User2FAToken::findActiveToken(
+                    $user->id,
+                    $request->ip(),
+                    $request->userAgent()
+                );
+
+                if ($tokenRecord && $tokenRecord->token === $token && !$tokenRecord->isExpired()) {
+                    return true;
+                }
+            }
+        }
+
+        // Fallback to old cookie-based 2FA for backward compatibility
+        if (!empty($request->cookie('user_2fa'))) {
+            try {
+                $linkCode = decrypt($request->cookie('user_2fa'));
+                $info = explode('|', $linkCode);
+                $userId = $info[0];
+                $code = $info[1];
+
+                $user = \App\Models\User::find($userId);
+
+                if ($user && $user->auth_code === $code) {
+                    return true;
+                }
+            } catch (\Exception $e) {
+                return false;
+            }
+        }
+
+        return false;
     }
 
     /**

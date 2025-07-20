@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use App\Models\User;
 use App\Models\UserSession;
+use App\Models\User2FAToken;
 use Illuminate\Support\Facades\Session;
 
 class TwoFactorAuthentication extends Controller
@@ -77,6 +78,19 @@ class TwoFactorAuthentication extends Controller
             return view('auth.2fa.error', ['message' => __('signin.2fa_code_expired')]);
         }
 
+        // Create 2FA token for this device
+        $token = Str::random(64);
+        $expiresAt = now()->addDays(30); // 30 days
+
+        User2FAToken::create([
+            'user_id' => $user->id,
+            'token' => $token,
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'expires_at' => $expiresAt,
+            'is_active' => true,
+        ]);
+
         // Create session record after successful 2FA
         if (config('session.multiple_sessions', true)) {
             $sessionId = Session::getId();
@@ -98,7 +112,8 @@ class TwoFactorAuthentication extends Controller
             }
         }
 
-        $cookie = cookie('user_2fa', $request->code, 43200); // 30 days
+        // Set 2FA cookie with token
+        $cookie = cookie('user_2fa_token', $token, 43200); // 30 days
 
         return redirect(RouteServiceProvider::HOME)->cookie($cookie);
     }

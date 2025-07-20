@@ -6,6 +6,7 @@ use Session;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Models\User2FAToken;
 
 class Check2FA
 {
@@ -21,21 +22,42 @@ class Check2FA
             return $next($request);
         }
 
-        if (empty($request->cookie('user_2fa'))) {
-            return redirect()->route('2fa');
-        } else {
-            $linkCode = decrypt($request->cookie('user_2fa'));
-            $info = explode('|', $linkCode);
-            $userId = $info[0];
-            $code = $info[1];
+        // Check for new token-based 2FA
+        if ($request->hasCookie('user_2fa_token')) {
+            $token = $request->cookie('user_2fa_token');
+            $user = auth()->user();
 
-            $user = \App\Models\User::find($userId);
+            if ($user) {
+                $tokenRecord = User2FAToken::findActiveToken(
+                    $user->id,
+                    $request->ip(),
+                    $request->userAgent()
+                );
 
-            if ($user->auth_code !== $code) {
-                return redirect()->route('2fa');
+                if ($tokenRecord && $tokenRecord->token === $token && !$tokenRecord->isExpired()) {
+                    return $next($request);
+                }
             }
         }
 
-        return $next($request);
+        // Fallback to old cookie-based 2FA for backward compatibility
+        if (!empty($request->cookie('user_2fa'))) {
+            try {
+                $linkCode = decrypt($request->cookie('user_2fa'));
+                $info = explode('|', $linkCode);
+                $userId = $info[0];
+                $code = $info[1];
+
+                $user = \App\Models\User::find($userId);
+
+                if ($user && $user->auth_code === $code) {
+                    return $next($request);
+                }
+            } catch (\Exception $e) {
+                // Invalid cookie, continue to 2FA
+            }
+        }
+
+        return redirect()->route('2fa');
     }
 }
