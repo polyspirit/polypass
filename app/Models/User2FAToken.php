@@ -9,6 +9,8 @@ class User2FAToken extends Model
 {
     use HasFactory;
 
+    protected $table = 'user_2fa_tokens';
+
     protected $fillable = [
         'user_id',
         'token',
