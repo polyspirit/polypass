@@ -30,8 +30,9 @@ class UserSessionController extends Controller
             ->where('is_active', true)
             ->orderBy('last_activity', 'desc')
             ->get();
+        $title = __('sessions.title');
 
-        return view('pages.users.sessions.index', compact('sessions'));
+        return view('pages.users.sessions.index', compact('sessions', 'title'));
     }
 
     /**
