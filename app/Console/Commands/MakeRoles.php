@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -22,10 +21,9 @@ class MakeRoles extends Command
         $roles = config('roles.roles');
 
         foreach ($roles as $roleName => $permissions) {
-            try {
+            $role = Role::findByName($roleName);
+            if (is_null($role)) {
                 $role = Role::create(['name' => $roleName]);
-            } catch (\Throwable $th) {
-                $role = Role::findByName($roleName);
             }
 
             foreach ($permissions as $permissionName) {

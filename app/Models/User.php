@@ -8,13 +8,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-
 use App\Models\Credential;
 use App\Models\Group;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
+    use HasRoles;
 
     protected $fillable = [
         'name',
@@ -50,6 +52,8 @@ class User extends Authenticatable
 
     public static function getUsersByRole(string $roleName): \Illuminate\Support\Collection
     {
-        return self::whereHas('roles', function($q) use ($roleName){ $q->where('name', $roleName); })->get();
+        return self::whereHas('roles', function ($q) use ($roleName) {
+            $q->where('name', $roleName);
+        })->get();
     }
 }

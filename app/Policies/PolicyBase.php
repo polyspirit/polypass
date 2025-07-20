@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
-
 use App\Models\User;
 
 class PolicyBase
