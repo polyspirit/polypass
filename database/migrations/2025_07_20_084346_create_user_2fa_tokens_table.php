@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('user_2fa_tokens', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->text('token');
-            $table->string('ip_address')->nullable();
-            $table->text('user_agent')->nullable();
+            $table->string('token', 255);
+            $table->string('ip_address', 45)->nullable();
+            $table->string('user_agent', 255)->nullable();
             $table->timestamp('expires_at');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
 
-            $table->index(['user_id', 'ip_address']);
+            $table->index('user_id');
             $table->index('expires_at');
         });
     }
