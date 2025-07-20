@@ -26,4 +26,5 @@ return [
     'browser' => 'Browser',
     'operating_system' => 'Operating System',
     'location_unknown' => 'Location Unknown',
+    'session_terminated_remotely' => 'Your session has been terminated from another device.',
 ];

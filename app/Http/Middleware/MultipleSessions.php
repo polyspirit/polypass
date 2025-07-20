@@ -40,6 +40,16 @@ class MultipleSessions
                 ->where('user_id', $user->id)
                 ->first();
 
+            // Check if session is still active in database
+            if ($userSession && !$userSession->is_active) {
+                // Session was terminated, force logout
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return redirect()->route('login')->with('error', __('sessions.session_terminated_remotely'));
+            }
+
             if (!$userSession) {
                 // Create new session record
                 $userSession = UserSession::create([

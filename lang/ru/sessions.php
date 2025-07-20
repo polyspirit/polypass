@@ -26,4 +26,5 @@ return [
     'browser' => 'Браузер',
     'operating_system' => 'Операционная система',
     'location_unknown' => 'Местоположение неизвестно',
+    'session_terminated_remotely' => 'Ваша сессия была завершена с другого устройства.',
 ];

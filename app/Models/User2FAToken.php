@@ -55,8 +55,6 @@ class User2FAToken extends Model
     public static function findActiveToken($userId, $ipAddress, $userAgent)
     {
         return self::where('user_id', $userId)
-            ->where('ip_address', $ipAddress)
-            ->where('user_agent', $userAgent)
             ->where('is_active', true)
             ->where('expires_at', '>', now())
             ->first();

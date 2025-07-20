@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Models\UserSession;
 
 class UserSessionController extends Controller
@@ -53,7 +54,11 @@ class UserSessionController extends Controller
             return back()->with('error', __('sessions.cannot_terminate_current'));
         }
 
+        // Deactivate session in database
         $session->deactivate();
+
+        // Force logout by invalidating session
+        $this->forceLogoutSession($sessionId);
 
         return back()->with('success', __('sessions.session_terminated'));
     }
@@ -66,10 +71,23 @@ class UserSessionController extends Controller
         $user = Auth::user();
         $currentSessionId = session()->getId();
 
-        $terminatedCount = UserSession::where('user_id', $user->id)
+        // Get sessions to terminate
+        $sessionsToTerminate = UserSession::where('user_id', $user->id)
             ->where('session_id', '!=', $currentSessionId)
             ->where('is_active', true)
-            ->update(['is_active' => false]);
+            ->get();
+
+        $terminatedCount = 0;
+
+        foreach ($sessionsToTerminate as $session) {
+            // Deactivate session in database
+            $session->deactivate();
+
+            // Force logout by invalidating session
+            $this->forceLogoutSession($session->session_id);
+
+            $terminatedCount++;
+        }
 
         return back()->with('success', __('sessions.others_terminated', ['count' => $terminatedCount]));
     }
@@ -88,5 +106,24 @@ class UserSessionController extends Controller
         ];
 
         return response()->json($stats);
+    }
+
+    /**
+     * Force logout by invalidating session.
+     */
+    private function forceLogoutSession($sessionId)
+    {
+        // Get session file path
+        $sessionPath = storage_path('framework/sessions/' . $sessionId);
+
+        // Delete session file if it exists
+        if (file_exists($sessionPath)) {
+            unlink($sessionPath);
+        }
+
+        // Also try to delete session from database if using database driver
+        if (config('session.driver') === 'database') {
+            DB::table('sessions')->where('id', $sessionId)->delete();
+        }
     }
 }

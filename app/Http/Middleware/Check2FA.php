@@ -28,19 +28,21 @@ class Check2FA
             $user = auth()->user();
 
             if ($user) {
-                $tokenRecord = User2FAToken::findActiveToken(
-                    $user->id,
-                    $request->ip(),
-                    $request->userAgent()
-                );
+                $tokenRecord = User2FAToken::where('user_id', $user->id)
+                    ->where('token', $token)
+                    ->where('is_active', true)
+                    ->where('expires_at', '>', now())
+                    ->first();
 
-                if ($tokenRecord && $tokenRecord->token === $token && !$tokenRecord->isExpired()) {
+                if ($tokenRecord) {
                     return $next($request);
                 }
             }
         }
 
         // Fallback to old cookie-based 2FA for backward compatibility
+        // Temporarily disabled to force new token system
+        /*
         if (!empty($request->cookie('user_2fa'))) {
             try {
                 $linkCode = decrypt($request->cookie('user_2fa'));
@@ -57,6 +59,7 @@ class Check2FA
                 // Invalid cookie, continue to 2FA
             }
         }
+        */
 
         return redirect()->route('2fa');
     }
