@@ -28,15 +28,24 @@
         ])
     </div>
     <div class="mb-3">
+        @php
+            $noteContent = '{"ops":[{"insert":"\n"}]}';
+            if (isset($note) && $note->note) {
+                $noteContent = is_string($note->note) && json_decode($note->note)
+                    ? $note->note
+                    : json_encode(['ops' => [['insert' => $note->note]]]);
+            }
+        @endphp
         <div class="d-none">
             @include('parts.fields.textarea', [
                 'name' => 'note',
                 'title' => __('notes.note'),
-                'value' => isset($note) ? $note->note : '{"ops":[{"insert":"\n"}]}',
+                'value' => $noteContent,
             ])
         </div>
         <div class="mb-2">{{ __('notes.note') }}</div>
-        <div id="note-editor" data-readonly="{{ empty($disabled) ? 0 : 1 }}" data-initial-content="{{ isset($note) && $note->note ? $note->note : '{"ops":[{"insert":"\n"}]}' }}"></div>
+        <div id="note-editor" data-readonly="{{ empty($disabled) ? 0 : 1 }}"
+            data-initial-content="{{ $noteContent }}"></div>
     </div>
     <div class="mb-3">
         @include('parts.fields.checkbox', [

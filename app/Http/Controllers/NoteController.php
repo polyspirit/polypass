@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Crypt;
 use App\Enums\GroupTypeEnum;
 use App\Models\Group;
 use App\Models\Note;
@@ -80,8 +79,6 @@ class NoteController extends Controller
             $request->merge(['group_id' => $groupRoot->id]);
         }
 
-        $this->encryptData($request);
-
         $note = Note::create($request->all());
 
         return $this->show($note);
@@ -125,7 +122,6 @@ class NoteController extends Controller
         ];
 
         $request->validate($validationRules);
-        $this->encryptData($request);
 
         $note->update($request->all());
 
@@ -157,25 +153,6 @@ class NoteController extends Controller
         }
 
         return $groupsOptions;
-    }
-
-    private function encryptData(Request &$request): Request
-    {
-        if ($request->has('note') && !empty($request->note)) {
-            // Validate that note is valid JSON
-            $noteData = $request->note;
-            if (is_string($noteData)) {
-                $decoded = json_decode($noteData, true);
-                if (json_last_error() === JSON_ERROR_NONE) {
-                    $request->merge(['note' => Crypt::encryptString($noteData)]);
-                } else {
-                    // If not valid JSON, treat as plain text
-                    $request->merge(['note' => Crypt::encryptString($noteData)]);
-                }
-            }
-        }
-
-        return $request;
     }
 
     private function getBreadcrumbs(Note $note): array
