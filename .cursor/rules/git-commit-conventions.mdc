@@ -1,0 +1,48 @@
+---
+description: Use Conventional Commits for all git commit messages
+alwaysApply: true
+---
+
+# Git Commit Conventions
+
+Always write commit messages in [Conventional Commits](https://www.conventionalcommits.org/) format.
+
+## Format
+
+```
+<type>(<optional-scope>): <short description>
+```
+
+- Description in English, imperative mood, lowercase after the colon
+- Keep the subject line concise (aim ≤72 characters)
+- Optional scope in parentheses when it clarifies the area (e.g. `note`, `2fa`)
+
+## Types used in this project
+
+| Type | When |
+|------|------|
+| `feat` | New feature |
+| `fix` | Bug fix |
+| `chore` | Maintenance, gitignore, tooling housekeeping |
+| `build` | Build system, Vite, Laravel upgrade, deps that affect build |
+| `refactor` | Code change without behavior change |
+| `docs` | Documentation only |
+| `style` | Formatting, no logic change |
+| `perf` | Performance improvement |
+
+## Examples
+
+```
+fix(note): decrypt after save
+feat: multisession
+chore: remove build from index
+build: upgrade to vite7
+```
+
+## Avoid
+
+```
+Stop tracking public/.htaccess and ignore error_log.
+Updated stuff
+WIP
+```
