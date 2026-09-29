@@ -26,10 +26,10 @@ class GroupController extends Controller
         $groupsBuilder = Group::where('type', '!=', GroupTypeEnum::Root->value);
 
         if ($request->has('type')) {
-            $groupsBuilder->where('type', $request->type)->orderBy('type', 'asc');
+            $groupsBuilder->where('type', $request->type);
         }
 
-        $groups = $groupsBuilder->orderBy('name', 'asc')->get();
+        $groups = $groupsBuilder->orderBy('type', 'asc')->orderBy('name', 'asc')->get();
 
         $this->checkItemsPolicy($groups);
 
