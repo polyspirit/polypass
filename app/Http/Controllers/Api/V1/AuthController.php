@@ -130,7 +130,7 @@ class AuthController extends Controller
     {
         $this->sendCode($request->user(), $request->user()->currentAccessToken());
 
-        return response()->json(['message' => __('signin.2fa_sent')]);
+        return response()->json(['message' => __('signin.2fa_code_sent')]);
     }
 
     public function logout(Request $request): Response

@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -46,5 +47,27 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * Framework puts untranslated messages to exceptions ("Unauthenticated.", "Too Many Attempts." etc.),
+     * translate them with lang/*.json for JSON responses.
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        return $this->shouldReturnJson($request, $exception)
+            ? response()->json(['message' => __($exception->getMessage())], 401)
+            : parent::unauthenticated($request, $exception);
+    }
+
+    protected function convertExceptionToArray(Throwable $e)
+    {
+        $data = parent::convertExceptionToArray($e);
+
+        if (is_string($data['message'] ?? null) && $data['message'] !== '') {
+            $data['message'] = __($data['message']);
+        }
+
+        return $data;
     }
 }

@@ -95,6 +95,17 @@ return [
     |
     */
 
+    /*
+    |--------------------------------------------------------------------------
+    | Available Locales
+    |--------------------------------------------------------------------------
+    |
+    | Languages the API can answer in, chosen by Accept-Language header.
+    |
+    */
+
+    'available_locales' => ['en', 'ru'],
+
     'fallback_locale' => 'en',
 
     /*

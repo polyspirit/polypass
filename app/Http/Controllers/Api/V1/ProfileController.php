@@ -32,7 +32,7 @@ class ProfileController extends Controller
                 Rule::requiredIf($request->has('password') || ($request->has('email') && $request->input('email') !== $user->email)),
                 'current_password:sanctum',
             ],
-        ]);
+        ], [], ['name' => mb_strtolower(__('users.name'))]);
 
         unset($data['current_password']);
 

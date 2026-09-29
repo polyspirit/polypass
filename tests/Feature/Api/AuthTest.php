@@ -122,6 +122,6 @@ class AuthTest extends ApiTestCase
 
     public function testResponsesAreJsonWithoutAcceptHeader()
     {
-        $this->get('/api/v1/me')->assertUnauthorized()->assertJson(['message' => 'Unauthenticated.']);
+        $this->get('/api/v1/me')->assertUnauthorized()->assertJson(['message' => __('Unauthenticated.')]);
     }
 }

@@ -1,0 +1,13 @@
+{
+    "Unauthenticated.": "Требуется авторизация.",
+    "Too Many Attempts.": "Слишком много попыток.",
+    "This action is unauthorized.": "Действие запрещено.",
+    "Forbidden": "Доступ запрещён",
+    "Not Found": "Не найдено",
+    "Server Error": "Ошибка сервера",
+    "Invalid ability provided.": "Недостаточно прав токена.",
+    "Wrong user! ": "Нет доступа к чужой записи.",
+    "User do not have a permission to modify": "Недостаточно прав для изменения.",
+    "User do not have a permission to create": "Недостаточно прав для создания.",
+    "There is no role named `:role` for guard `:guard`.": "Роль `:role` для guard `:guard` не существует."
+}
