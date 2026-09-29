@@ -70,4 +70,16 @@ class GroupNoteTest extends ApiTestCase
         $this->withBearer($token)->deleteJson("/api/v1/notes/{$id}")->assertNoContent();
         $this->assertDatabaseMissing('notes', ['id' => $id]);
     }
+
+
+    public function testNoteListContainsDates()
+    {
+        $user = $this->createUser();
+        $token = $this->accessToken($user);
+        $this->withBearer($token)->postJson('/api/v1/notes', ['name' => 'Todo', 'note' => 'text']);
+
+        $this->withBearer($token)->getJson('/api/v1/notes')
+            ->assertOk()
+            ->assertJsonStructure(['data' => [['id', 'created_at', 'updated_at']]]);
+    }
 }

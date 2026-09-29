@@ -31,7 +31,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
     Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('auth.logout');
 
-    Route::middleware(['auth:sanctum', 'abilities:' . AuthController::ABILITY_ACCESS])->group(function () {
+    Route::middleware(['auth:sanctum', 'abilities:' . AuthController::ABILITY_ACCESS, 'token.ip'])->group(function () {
         Route::get('/me', [ProfileController::class, 'show'])->name('me.show');
         Route::patch('/me', [ProfileController::class, 'update'])->name('me.update');
 

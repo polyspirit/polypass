@@ -19,6 +19,7 @@ class NoteSummaryResource extends JsonResource
             'group_id' => $this->group_id,
             'name' => $this->name,
             'favorite' => $this->favorite,
+            'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
     }

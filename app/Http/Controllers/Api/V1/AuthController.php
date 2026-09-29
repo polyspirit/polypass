@@ -76,7 +76,7 @@ class AuthController extends Controller
         RateLimiter::clear($throttleKey);
 
         if (!config('app.2fa_enabled', true)) {
-            return $this->issueAccessToken($user, $request->input('device_name'));
+            return $this->issueAccessToken($user, $request->input('device_name'), $request->ip());
         }
 
         $pendingToken = $user->createToken(
@@ -123,7 +123,7 @@ class AuthController extends Controller
         Cache::forget($cacheKey);
         $pendingToken->delete();
 
-        return $this->issueAccessToken($request->user(), $pendingToken->name);
+        return $this->issueAccessToken($request->user(), $pendingToken->name, $request->ip());
     }
 
     public function resend2FA(Request $request): JsonResponse
@@ -143,13 +143,14 @@ class AuthController extends Controller
 
     // OTHER
 
-    private function issueAccessToken(User $user, string $deviceName): JsonResponse
+    private function issueAccessToken(User $user, string $deviceName, ?string $ip): JsonResponse
     {
         $token = $user->createToken(
             $deviceName,
             [self::ABILITY_ACCESS],
             now()->addDays(self::TOKEN_LIFETIME_DAYS)
         );
+        $token->accessToken->forceFill(['last_ip' => $ip])->save();
 
         return response()->json([
             'two_factor_required' => false,

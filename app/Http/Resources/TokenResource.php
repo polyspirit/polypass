@@ -13,6 +13,7 @@ class TokenResource extends JsonResource
         return [
             'id' => $this->id,
             'device_name' => $this->name,
+            'ip' => $this->last_ip,
             'is_current' => $this->id === $request->user()->currentAccessToken()->id,
             'last_used_at' => $this->last_used_at,
             'expires_at' => $this->expires_at,

@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'configs.set' => \App\Http\Middleware\SetConfigs::class,
         'abilities' => \Laravel\Sanctum\Http\Middleware\CheckAbilities::class,
         'ability' => \Laravel\Sanctum\Http\Middleware\CheckForAnyAbility::class,
+        'token.ip' => \App\Http\Middleware\UpdateTokenIp::class,
     ];
 }

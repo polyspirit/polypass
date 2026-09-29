@@ -65,4 +65,38 @@ class ProfileTokenTest extends ApiTestCase
         $this->withBearer($this->accessToken($user))->deleteJson("/api/v1/tokens/{$foreignId}")->assertNotFound();
         $this->assertDatabaseHas('personal_access_tokens', ['id' => $foreignId]);
     }
+
+
+    public function testTokenIpIsSavedOnLoginAndUpdatedOnUse()
+    {
+        config(['app.2fa_enabled' => false]);
+        $user = $this->createUser();
+
+        $token = $this->withServerVariables(['REMOTE_ADDR' => '10.0.0.1'])
+            ->postJson('/api/v1/auth/login', ['email' => $user->email, 'password' => 'password', 'device_name' => 'Phone'])
+            ->assertOk()
+            ->json('token');
+        $tokenId = (int) explode('|', $token)[0];
+
+        $this->assertDatabaseHas('personal_access_tokens', ['id' => $tokenId, 'last_ip' => '10.0.0.1']);
+
+        $this->withServerVariables(['REMOTE_ADDR' => '10.0.0.2'])
+            ->withBearer($token)
+            ->getJson('/api/v1/tokens')
+            ->assertOk()
+            ->assertJsonPath('data.0.ip', '10.0.0.2');
+
+        $this->assertDatabaseHas('personal_access_tokens', ['id' => $tokenId, 'last_ip' => '10.0.0.2']);
+    }
+
+    public function testPendingTokenIpIsNotSaved()
+    {
+        \Illuminate\Support\Facades\Mail::fake();
+        $user = $this->createUser();
+
+        $token = $this->postJson('/api/v1/auth/login', ['email' => $user->email, 'password' => 'password', 'device_name' => 'Phone'])
+            ->json('token');
+
+        $this->assertDatabaseHas('personal_access_tokens', ['id' => (int) explode('|', $token)[0], 'last_ip' => null]);
+    }
 }

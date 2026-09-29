@@ -39,7 +39,8 @@ class CredentialController extends Controller
             'search' => ['string', 'max:127'],
         ]);
 
-        $credentials = Credential::where('user_id', $request->user()->id)
+        $credentials = Credential::with('remote')
+            ->where('user_id', $request->user()->id)
             ->when($request->has('group_id'), fn ($q) => $q->where('group_id', $request->input('group_id')))
             ->when($request->has('favorite'), fn ($q) => $q->where('favorite', $request->boolean('favorite')))
             ->when($request->filled('search'), fn ($q) => $q->where('name', 'like', '%' . $request->input('search') . '%'))

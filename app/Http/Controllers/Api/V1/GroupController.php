@@ -70,7 +70,7 @@ class GroupController extends Controller
     public function show(Group $group): GroupResource
     {
         return new GroupResource($group->load([
-            'credentials' => fn ($q) => $q->orderBy('name'),
+            'credentials' => fn ($q) => $q->with('remote')->orderBy('name'),
             'notes' => fn ($q) => $q->orderBy('name'),
         ]));
     }
