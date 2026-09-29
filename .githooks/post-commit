@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Tag HEAD from committed VERSION as Composer-compatible semver: MAJOR.MINOR.PATCH
+# (no "v" prefix, no -gSHORTSHA / pre-release / build metadata).
+set -euo pipefail
+
+if [[ "${GIT_AUTO_VERSION_SKIP:-}" == "1" ]]; then
+    exit 0
+fi
+
+version="$(git show HEAD:VERSION 2>/dev/null | tr -d '[:space:]' || true)"
+if [[ -z "$version" ]]; then
+    exit 0
+fi
+
+# Normalize optional leading "v"
+if [[ "$version" =~ ^v([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+    version="${BASH_REMATCH[1]}"
+fi
+
+if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    echo "Invalid VERSION in commit (expected MAJOR.MINOR.PATCH): ${version}" >&2
+    exit 0
+fi
+
+# HEAD already tagged with this version
+if git tag --points-at HEAD | grep -qx "$version"; then
+    exit 0
+fi
+
+if git show-ref --verify --quiet "refs/tags/${version}"; then
+    echo "Tag ${version} already exists on another commit; skip tagging." >&2
+    exit 0
+fi
+
+GIT_AUTO_VERSION_SKIP=1 git tag "$version"
+echo "Created Composer version tag: ${version}"

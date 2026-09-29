@@ -1,0 +1,194 @@
+#!/usr/bin/env bash
+# 1. If VERSION on the branch tip is already tagged on an older commit, auto-create
+#    the next patch release (VERSION commit + tag) and publish it. Composer would
+#    otherwise keep installing the old tag and miss the new code.
+# 2. Create the VERSION tag on the tip if it is missing (post-commit skipped).
+# 3. Push Composer semver tags for the commits in this push.
+# 4. If a Git GUI invokes this hook with empty stdin, still guard the current branch.
+set -euo pipefail
+
+remote="${1:-origin}"
+zero="0000000000000000000000000000000000000000"
+tags_to_push=()
+stdin_empty=1
+auto_released_version=""
+
+is_queued() {
+    local candidate="$1"
+    local existing
+    for existing in "${tags_to_push[@]:-}"; do
+        [[ "$existing" == "$candidate" ]] && return 0
+    done
+    return 1
+}
+
+queue_tag() {
+    local tag="$1"
+    is_queued "$tag" && return 0
+    tags_to_push+=("$tag")
+}
+
+normalize_semver() {
+    local raw="$1"
+    raw="$(printf '%s' "$raw" | tr -d '[:space:]')"
+    if [[ "$raw" =~ ^v?([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+        printf '%s.%s.%s' "${BASH_REMATCH[1]}" "${BASH_REMATCH[2]}" "${BASH_REMATCH[3]}"
+        return 0
+    fi
+    return 1
+}
+
+next_patch_version() {
+    local current="$1"
+    if [[ ! "$current" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+        echo "Internal error parsing VERSION: ${current}" >&2
+        return 1
+    fi
+    printf '%s.%s.%s' "${BASH_REMATCH[1]}" "${BASH_REMATCH[2]}" "$((BASH_REMATCH[3] + 1))"
+}
+
+unused_patch_version() {
+    local candidate="$1"
+    while git show-ref --verify --quiet "refs/tags/${candidate}"; do
+        candidate="$(next_patch_version "$candidate")"
+    done
+    printf '%s' "$candidate"
+}
+
+version_from_commit() {
+    local commit="$1"
+    local raw
+    raw="$(git show "${commit}:VERSION" 2>/dev/null || true)"
+    if [[ -z "$raw" ]]; then
+        echo "Commit ${commit} has no VERSION file." >&2
+        return 1
+    fi
+    if ! normalize_semver "$raw"; then
+        echo "Commit ${commit} VERSION must be MAJOR.MINOR.PATCH, got: ${raw}" >&2
+        return 1
+    fi
+}
+
+# Commit + tag the next patch on HEAD, then push that release to $remote.
+auto_release_stale_tip() {
+    local tip="$1"
+    local local_ref="$2"
+    local version="$3"
+    local tagged="$4"
+    local root new_version branch
+
+    if [[ "$(git rev-parse HEAD)" != "$tip" ]]; then
+        echo "Push rejected: VERSION ${version} is already tagged on ${tagged:0:7}," >&2
+        echo "but this branch tip is ${tip:0:7} (newer commits without a version bump)." >&2
+        echo "Check out this branch and push again so the next VERSION can be created." >&2
+        return 1
+    fi
+
+    root="$(git rev-parse --show-toplevel)"
+    new_version="$(unused_patch_version "$(next_patch_version "$version")")"
+    branch="${local_ref#refs/heads/}"
+
+    printf '%s\n' "$new_version" > "${root}/VERSION"
+    GIT_AUTO_VERSION_SKIP=1 git commit --only -m "build: release ${new_version}" -- VERSION
+    GIT_AUTO_VERSION_SKIP=1 git tag "$new_version"
+
+    echo "VERSION ${version} was tagged on ${tagged:0:7}; created ${new_version} on $(git rev-parse --short HEAD)."
+    echo "Pushing ${branch} and tag ${new_version} to ${remote}..."
+    git push --no-verify "$remote" "HEAD:refs/heads/${branch}" "$new_version"
+    auto_released_version="$new_version"
+}
+
+# The branch tip that Composer consumers will see must carry its own VERSION tag.
+ensure_tip_release_tag() {
+    local tip="$1"
+    local local_ref="$2"
+    local version tagged
+    version="$(version_from_commit "$tip")"
+
+    if git show-ref --verify --quiet "refs/tags/${version}"; then
+        tagged="$(git rev-list -n 1 "refs/tags/${version}")"
+        if [[ "$tagged" != "$tip" ]]; then
+            auto_release_stale_tip "$tip" "$local_ref" "$version" "$tagged"
+            return
+        fi
+        queue_tag "$version"
+        return 0
+    fi
+
+    GIT_AUTO_VERSION_SKIP=1 git tag "$version" "$tip"
+    echo "Created missing Composer version tag on tip: ${version}"
+    queue_tag "$version"
+}
+
+collect_tags_for_commit() {
+    local commit="$1"
+    local tag
+    while IFS= read -r tag; do
+        [[ -n "$tag" ]] || continue
+        [[ "$tag" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || continue
+        queue_tag "$tag"
+    done < <(git tag --points-at "$commit" 2>/dev/null || true)
+}
+
+process_branch_push() {
+    local local_ref="$1"
+    local local_sha="$2"
+    local remote_sha="$3"
+    local commits
+
+    ensure_tip_release_tag "$local_sha" "$local_ref"
+
+    if [[ -n "$auto_released_version" ]]; then
+        return 0
+    fi
+
+    if [[ "$remote_sha" == "$zero" ]]; then
+        commits="$(git rev-list "$local_sha" --not --remotes="$remote" 2>/dev/null || true)"
+        if [[ -z "$commits" ]]; then
+            commits="$(git rev-list -n 1 "$local_sha")"
+        fi
+    else
+        commits="$(git rev-list "${remote_sha}..${local_sha}" 2>/dev/null || true)"
+    fi
+
+    while IFS= read -r commit; do
+        [[ -n "$commit" ]] || continue
+        collect_tags_for_commit "$commit"
+    done <<< "$commits"
+}
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+    stdin_empty=0
+    # Ignore deletes and non-branch refs
+    if [[ "$local_sha" == "$zero" || "$local_ref" != refs/heads/* ]]; then
+        continue
+    fi
+    process_branch_push "$local_ref" "$local_sha" "$remote_sha"
+done
+
+# Some Git GUIs invoke pre-push without the ref list on stdin; still guard HEAD.
+if [[ "$stdin_empty" -eq 1 ]]; then
+    echo "pre-push: no refs on stdin (Git GUI); guarding current branch." >&2
+    branch="$(git symbolic-ref --short HEAD 2>/dev/null || true)"
+    if [[ -n "$branch" ]]; then
+        remote_sha="$(git rev-parse "refs/remotes/${remote}/${branch}" 2>/dev/null || true)"
+        [[ -n "$remote_sha" ]] || remote_sha="$zero"
+        process_branch_push "refs/heads/${branch}" "$(git rev-parse HEAD)" "$remote_sha"
+    fi
+fi
+
+# Nested push already published the new release; abort the original (stale SHA) push.
+if [[ -n "$auto_released_version" ]]; then
+    echo "Published Composer ${auto_released_version} to ${remote}." >&2
+    echo "Original push aborted on purpose — it still pointed at the pre-release commit." >&2
+    echo "Local and remote are up to date; nothing else to do." >&2
+    exit 1
+fi
+
+if [[ ${#tags_to_push[@]} -eq 0 ]]; then
+    exit 0
+fi
+
+echo "Pushing Composer version tag(s): ${tags_to_push[*]}"
+# --no-verify avoids re-entering this pre-push hook
+git push --no-verify "$remote" "${tags_to_push[@]}"

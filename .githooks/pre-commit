@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# Bump VERSION patch on every commit (Composer semver: MAJOR.MINOR.PATCH).
+# Manual major/minor: stage a NEW version (e.g. 1.2.0) — kept as-is, no +1 patch.
+# If VERSION is staged but unchanged vs HEAD, patch is still bumped.
+set -euo pipefail
+
+if [[ "${GIT_AUTO_VERSION_SKIP:-}" == "1" ]]; then
+    exit 0
+fi
+
+root="$(git rev-parse --show-toplevel)"
+version_file="${root}/VERSION"
+
+normalize_semver() {
+    local raw="$1"
+    raw="$(printf '%s' "$raw" | tr -d '[:space:]')"
+    if [[ "$raw" =~ ^v?([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+        printf '%s.%s.%s' "${BASH_REMATCH[1]}" "${BASH_REMATCH[2]}" "${BASH_REMATCH[3]}"
+        return 0
+    fi
+    return 1
+}
+
+if head_version="$(git show HEAD:VERSION 2>/dev/null)"; then
+    base_raw="$(printf '%s' "$head_version" | tr -d '[:space:]')"
+elif [[ -f "$version_file" ]]; then
+    base_raw="$(tr -d '[:space:]' < "$version_file")"
+else
+    base_raw="0.0.0"
+fi
+
+if ! base="$(normalize_semver "$base_raw")"; then
+    echo "VERSION must be MAJOR.MINOR.PATCH (Composer semver), got: ${base_raw}" >&2
+    exit 1
+fi
+
+# Staged VERSION with a real change (e.g. 1.2.0) — use as-is, do not bump patch
+if git diff --cached --name-only --diff-filter=ACM | grep -qx 'VERSION'; then
+    staged_raw="$(git show :VERSION | tr -d '[:space:]')"
+    if ! staged="$(normalize_semver "$staged_raw")"; then
+        echo "Staged VERSION must be MAJOR.MINOR.PATCH, got: ${staged_raw}" >&2
+        exit 1
+    fi
+
+    if [[ "$staged" != "$base" ]]; then
+        printf '%s\n' "$staged" > "$version_file"
+        git add -- "$version_file"
+        echo "Using manual VERSION ${staged} (no patch bump)"
+        exit 0
+    fi
+fi
+
+if [[ ! "$base" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+    echo "Internal error parsing VERSION: ${base}" >&2
+    exit 1
+fi
+
+new_version="${BASH_REMATCH[1]}.${BASH_REMATCH[2]}.$((BASH_REMATCH[3] + 1))"
+
+printf '%s\n' "$new_version" > "$version_file"
+git add -- "$version_file"
+echo "Bumped VERSION to ${new_version}"
