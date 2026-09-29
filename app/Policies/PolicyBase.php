@@ -45,4 +45,19 @@ class PolicyBase
 
         return Response::deny('User do not have a permission to ' . $permission, 403);
     }
+
+    /**
+     * Update/delete own entity: "modify" permission is for own entities, "modify-any" includes it.
+     * Ownership is checked in both cases: users never modify entities of other users.
+     */
+    protected function checkModifyPermission(User $user, $entity): Response
+    {
+        foreach (['modify-any', 'modify'] as $permission) {
+            if ($user->checkPermissionTo($this->entitiesName . '-' . $permission)) {
+                return $this->checkPermission($user, $permission, $entity);
+            }
+        }
+
+        return Response::deny('User do not have a permission to modify', 403);
+    }
 }

@@ -22,11 +22,11 @@ class GroupPolicy extends PolicyBase
 
     public function update(User $user, Group $group): Response
     {
-        return $this->checkPermission($user, 'modify-any', $group);
+        return $this->checkModifyPermission($user, $group);
     }
 
     public function delete(User $user, Group $group): Response
     {
-        return $this->checkPermission($user, 'modify-any', $group);
+        return $this->checkModifyPermission($user, $group);
     }
 }

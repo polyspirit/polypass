@@ -13,7 +13,7 @@ abstract class ApiTestCase extends TestCase
 {
     use RefreshDatabase;
 
-    protected function createUser(string $role = 'superadmin'): User
+    protected function createUser(string $role = 'user'): User
     {
         $user = User::factory()->create();
         $user->assignRole($role);

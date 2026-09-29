@@ -22,11 +22,11 @@ class NotePolicy extends PolicyBase
 
     public function update(User $user, Note $note): Response
     {
-        return $this->checkPermission($user, 'modify-any', $note);
+        return $this->checkModifyPermission($user, $note);
     }
 
     public function delete(User $user, Note $note): Response
     {
-        return $this->checkPermission($user, 'modify-any', $note);
+        return $this->checkModifyPermission($user, $note);
     }
 }

@@ -22,11 +22,11 @@ class CredentialPolicy extends PolicyBase
 
     public function update(User $user, Credential $credential): Response
     {
-        return $this->checkPermission($user, 'modify-any', $credential);
+        return $this->checkModifyPermission($user, $credential);
     }
 
     public function delete(User $user, Credential $credential): Response
     {
-        return $this->checkPermission($user, 'modify-any', $credential);
+        return $this->checkModifyPermission($user, $credential);
     }
 }
