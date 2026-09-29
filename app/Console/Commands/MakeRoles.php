@@ -21,18 +21,10 @@ class MakeRoles extends Command
         $roles = config('roles.roles');
 
         foreach ($roles as $roleName => $permissions) {
-            $role = Role::findByName($roleName);
-            if (is_null($role)) {
-                $role = Role::create(['name' => $roleName]);
-            }
+            $role = Role::findOrCreate($roleName);
 
             foreach ($permissions as $permissionName) {
-                try {
-                    $permission = Permission::create(['name' => $permissionName]);
-                } catch (\Throwable $th) {
-                    $permission = Permission::findByName($permissionName);
-                }
-                $permission->assignRole($role);
+                Permission::findOrCreate($permissionName)->assignRole($role);
             }
         }
     }
