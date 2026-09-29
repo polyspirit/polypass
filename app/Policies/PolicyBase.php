@@ -33,7 +33,7 @@ class PolicyBase
     {
         if ($user->hasPermissionTo($this->entitiesName . '-' . $permission)) {
             if (isset($entity)) {
-                if ($entity->user->id === $user->id) {
+                if ((int) $entity->user_id === $user->id) {
                     return Response::allow();
                 } else {
                     return Response::deny('Wrong user! ', 403);

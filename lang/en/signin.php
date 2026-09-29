@@ -15,4 +15,8 @@ return [
     '2fa_sent' => 'We have sent to you an e-mail with the link you shoul click to sign in',
     '2fa_code_wrong' => 'Wrong authorization link',
     '2fa_code_expired' => 'Link is expired',
+    '2fa_code_invalid' => 'Invalid verification code',
+    '2fa_attempts_exceeded' => 'Too many wrong codes. Sign in again',
+    '2fa_code_subject' => 'Verification code',
+    '2fa_code_text' => 'Your verification code',
 ];

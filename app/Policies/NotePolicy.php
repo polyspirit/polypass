@@ -13,7 +13,7 @@ class NotePolicy extends PolicyBase
 
     public function view(User $user, Note $note): Response
     {
-        if ($user->id === $note->user->id) {
+        if ($user->id === (int) $note->user_id) {
             return Response::allow();
         }
 

@@ -13,7 +13,7 @@ class CredentialPolicy extends PolicyBase
 
     public function view(User $user, Credential $credential): Response
     {
-        if ($user->id === $credential->user->id) {
+        if ($user->id === (int) $credential->user_id) {
             return Response::allow();
         }
 

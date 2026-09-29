@@ -13,7 +13,7 @@ class GroupPolicy extends PolicyBase
 
     public function view(User $user, Group $group): Response
     {
-        if ($user->id === $group->user->id) {
+        if ($user->id === (int) $group->user_id) {
             return Response::allow();
         }
 

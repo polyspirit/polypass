@@ -55,5 +55,26 @@ class Credential extends Model
         } catch (\Throwable $th) {
             // nothing, just try
         }
+
+        // Decrypted values must not be treated as changes, otherwise a partial update saves them as plain text
+        $this->syncOriginalAttributes(['login', 'password', 'note']);
+    }
+
+    /**
+     * Encrypt secret fields before saving.
+     */
+    public static function encryptAttributes(array $data): array
+    {
+        foreach (['login', 'password'] as $field) {
+            if (isset($data[$field])) {
+                $data[$field] = Crypt::encryptString($data[$field]);
+            }
+        }
+
+        if (!empty($data['note'])) {
+            $data['note'] = Crypt::encryptString($data['note']);
+        }
+
+        return $data;
     }
 }
